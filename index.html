@@ -188,7 +188,7 @@
     <div class="error-box" id="errorBox">
       ❌ Nie można załadować pliku <code>oceny.json</code>.<br>
       Upewnij się, że plik istnieje w tym samym folderze co strona i ma poprawny format JSON:<br><br>
-      <code>[ { "ocena": 3, "waga": 0.6, "data": "2026-04-01" }, ... ]</code><br><br>
+      <code>[ { "ocena": "3+", "waga": 0.6, "data": "2026-04-01" }, ... ]</code><br><br>
       Wagi: <code>0.2</code> = mała &nbsp; <code>0.4</code> = średnia &nbsp; <code>0.6</code> = duża
     </div>
     <table class="grades-table" id="gradesTable" style="display:none">
@@ -236,6 +236,19 @@ const quotes = [
   { text: "Każde zadanie, które rozwiążesz, to jedno mniej na sprawdzianie.", author: "— Rachunek Prawdopodobieństwa" },
 ];
 
+function parseGrade(val) {
+  if (typeof val === 'number') return val;
+  if (typeof val === 'string') {
+    let clean = val.replace(',', '.').trim();
+    if (clean.includes('+')) {
+      let num = parseFloat(clean.replace('+', ''));
+      return isNaN(num) ? 0 : num + 0.5;
+    }
+    return parseFloat(clean) || 0;
+  }
+  return 0;
+}
+
 async function init() {
   updateCountdown();
   updateQuote();
@@ -267,7 +280,13 @@ async function loadGrades() {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error('JSON musi być tablicą');
-    grades = data.filter(g => typeof g.ocena === 'number' && [0.2, 0.4, 0.6].includes(g.waga));
+    
+    grades = data.map(g => ({
+      ...g,
+      ocenaWyswietlana: g.ocena, // zachowujemy oryginał (np. "3+")
+      ocena: parseGrade(g.ocena)  // konwertujemy na liczbę (np. 3.75)
+    })).filter(g => !isNaN(g.ocena) && [0.2, 0.4, 0.6].includes(g.waga));
+
     renderTable();
     updateStats();
     drawChart();
@@ -277,14 +296,13 @@ async function loadGrades() {
     document.getElementById('noData').style.display = 'none';
     const b = document.getElementById('statusBanner');
     b.className = 'status-banner bad';
-    b.textContent = '❌ Nie można załadować oceny.json — sprawdź czy plik istnieje obok strony.';
+    b.textContent = '❌ Nie można załadować oceny.json — sprawdź czy plik istnieje i ma poprawny format.';
     document.getElementById('currentAvg').textContent = '!';
     document.getElementById('currentGradeCount').textContent = 'błąd ładowania';
     drawChart();
   }
 }
 
-// Weighted average: sum(ocena * waga) / sum(waga)
 function weightedAvg(arr) {
   if (!arr.length) return 0;
   const sumW = arr.reduce((s, g) => s + g.waga, 0);
@@ -321,7 +339,7 @@ function renderTable() {
     const impact = ((g.ocena * g.waga / totalW)).toFixed(3);
     return `<tr>
       <td style="color:var(--muted)">${i + 1}</td>
-      <td><span class="grade-val ${gc}">${g.ocena}</span></td>
+      <td><span class="grade-val ${gc}">${g.ocenaWyswietlana}</span></td>
       <td><span class="badge-waga ${wl.cls}">${wl.txt}</span></td>
       <td style="color:var(--muted)">${g.data || '—'}</td>
       <td style="color:var(--muted);font-size:0.72rem">+${impact}</td>
@@ -342,7 +360,11 @@ function updateStats() {
   }
   const avg = weightedAvg(grades);
   const ar = Math.round(avg * 100) / 100;
-  document.getElementById('currentAvg').textContent = ar.toFixed(2);
+  
+  const avgEl = document.getElementById('currentAvg');
+  avgEl.textContent = ar.toFixed(2);
+  avgEl.className = 'card-value ' + (avg >= target ? 'gold' : 'danger');
+
   const n = grades.length;
   document.getElementById('currentGradeCount').textContent = `${n} ocen${n===1?'a':n<5?'y':''}  ·  suma wag: ${grades.reduce((s,g)=>s+g.waga,0).toFixed(1)}`;
 
@@ -380,6 +402,7 @@ function calcNeeded(currentAvg, currentGrades, target) {
 
 function drawChart() {
   const canvas = document.getElementById('chart');
+  if(!canvas) return;
   const ctx = canvas.getContext('2d');
   const dpr = window.devicePixelRatio || 1;
   const w = canvas.parentElement.clientWidth - 64;
@@ -392,7 +415,6 @@ function drawChart() {
   const pad = { t: 20, r: 20, b: 40, l: 42 };
   const cW = w - pad.l - pad.r, cH = h - pad.t - pad.b;
 
-  // Grid
   for (let g = 1; g <= 6; g++) {
     const y = pad.t + cH - ((g - 1) / 5) * cH;
     ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
@@ -401,7 +423,6 @@ function drawChart() {
     ctx.textAlign = 'right'; ctx.fillText(g, pad.l - 6, y + 4);
   }
 
-  // Target line 1.8
   const tY = pad.t + cH - ((1.8 - 1) / 5) * cH;
   ctx.setLineDash([6, 4]); ctx.strokeStyle = '#ffd700'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(pad.l, tY); ctx.lineTo(pad.l + cW, tY); ctx.stroke();
@@ -417,7 +438,6 @@ function drawChart() {
 
   const step = grades.length > 1 ? cW / (grades.length - 1) : cW / 2;
 
-  // Running weighted average line
   const avgPts = grades.map((g, i) => {
     const slice = grades.slice(0, i + 1);
     const ra = weightedAvg(slice);
@@ -437,7 +457,6 @@ function drawChart() {
     ctx.stroke();
   }
 
-  // Dots — size proportional to weight
   grades.forEach((g, i) => {
     const x = pad.l + (grades.length > 1 ? i * step : cW / 2);
     const y = pad.t + cH - ((g.ocena - 1) / 5) * cH;
@@ -447,21 +466,13 @@ function drawChart() {
     ctx.fillStyle = color; ctx.fill();
     ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1; ctx.stroke();
     ctx.fillStyle = '#fff'; ctx.font = `bold ${g.waga === 0.6 ? 11 : 10}px Space Mono, monospace`;
-    ctx.textAlign = 'center'; ctx.fillText(g.ocena, x, y - radius - 4);
+    ctx.textAlign = 'center'; ctx.fillText(g.ocenaWyswietlana, x, y - radius - 4);
   });
 
-  // X labels
   ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '9px Space Mono, monospace'; ctx.textAlign = 'center';
   grades.forEach((g, i) => {
     ctx.fillText(`#${i + 1}`, pad.l + (grades.length > 1 ? i * step : cW / 2), pad.t + cH + 16);
   });
-
-  // Legend
-  ctx.fillStyle = '#ff8c00'; ctx.fillRect(pad.l, h - 14, 20, 3);
-  ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '9px Space Mono, monospace';
-  ctx.textAlign = 'left'; ctx.fillText('Średnia ważona bieżąca', pad.l + 26, h - 10);
-  ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.fillText('(rozmiar kropki = waga oceny)', pad.l + 200, h - 10);
 }
 
 window.addEventListener('resize', drawChart);
