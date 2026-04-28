@@ -659,7 +659,7 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
     const avgOk = sc.avg >= TARGET_AVG;
     return `
       <div class="\${cls}">
-        <div class="sc-label">\${isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : `Scenariusz \${String.fromCharCode(65+i)}`}</div>
+        <div class="sc-label">\${isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : 'Scenariusz ' + String.fromCharCode(65+i)}</div>
         \${rows}
         <div class="sc-sep"></div>
         <div class="sc-result">Wynik: <strong>\${sc.avg.toFixed(2)}</strong> \${avgOk ? '✅' : '❌'}\${sc.margin < 0.06 && avgOk ? ' (margines '+sc.margin.toFixed(2)+'!)' : ''}</div>
@@ -670,7 +670,7 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
   const sliderRows = remaining.map((w, i) => {
     const id = `slot_\${i}`;
     const vid = `vslot_\${i}`;
-    const wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : `waga \${w}`;
+    const wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : 'waga ' + w;
     return `
       <div class="slider-row">
         <label>Ocena \${wLabel} #\${i+1}</label>
@@ -696,12 +696,7 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
       <div class="al-title">⚡ Kluczowy wniosek</div>
       Obecna średnia: <strong>\${curAvg.toFixed(2)}</strong> · \${alertNeed}\${alertWarn}
     </div>
-    \${remaining.length > 0 ? `
-    <div class="slider-section">
-      <div class="slider-label">🎮 Kalkulator — ustaw planowane oceny i sprawdź czy zdasz</div>
-      \${sliderRows}
-      <div class="slider-result" id="sliderResult"></div>
-    </div>` : ''}
+    ${remaining.length > 0 ? '<div class="slider-section"><div class="slider-label">🎮 Kalkulator — ustaw planowane oceny i sprawdź czy zdasz</div>' + sliderRows + '<div class="slider-result" id="sliderResult"></div></div>' : ''}
   `;
 
   // Podepnij słuchacze sliderów
