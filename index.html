@@ -613,25 +613,25 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
 
   // Jeśli już zdał lub brak slotów
   if (curAvg >= TARGET_AVG && remaining.length === 0) {
-    box.innerHTML = \`
+    box.innerHTML = `
       <div class="mission-title">🏆 MISJA ZAKOŃCZONA!</div>
       <div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.3);padding:1.5rem;margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.9rem;line-height:1.8;">
         ✅ Wojtek zdał! Średnia ważona <strong>${curAvg.toFixed(2)}</strong> przekracza wymagane 1.8.<br>
         Wszystkie oczekiwane oceny zostały zdobyte. GRATULACJE! 🎉
       </div>
-    \`;
+    `;
     return;
   }
 
   if (remaining.length === 0 && curAvg < TARGET_AVG) {
-    box.innerHTML = \`
+    box.innerHTML = `
       <div class="mission-title">⚠️ Brak więcej slotów</div>
       <div class="mission-alert" style="margin-top:1rem;">
         <div class="al-title">Sytuacja krytyczna</div>
         Wszystkie oczekiwane oceny zostały dodane, ale średnia <strong>${curAvg.toFixed(2)}</strong> jest poniżej 1.8.<br>
         Porozmawiaj z nauczycielem o dodatkowych ocenach.
       </div>
-    \`;
+    `;
     return;
   }
 
@@ -640,9 +640,9 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
 
   // Buduj HTML
   let subtitleParts = [];
-  if (rem06 > 0) subtitleParts.push(\`\${rem06} ocen\${rem06===1?'a':'y'} z wagą 0.6\`);
-  if (rem04 > 0) subtitleParts.push(\`\${rem04} ocen\${rem04===1?'a':'y'} z wagą 0.4\`);
-  const subtitle = subtitleParts.length ? \`Zostało: \${subtitleParts.join(' + ')} · Cel: średnia ≥ 1.80\` : 'Cel: średnia ≥ 1.80';
+  if (rem06 > 0) subtitleParts.push(`\${rem06} ocen\${rem06===1?'a':'y'} z wagą 0.6`);
+  if (rem04 > 0) subtitleParts.push(`\${rem04} ocen\${rem04===1?'a':'y'} z wagą 0.4`);
+  const subtitle = subtitleParts.length ? `Zostało: \${subtitleParts.join(' + ')} · Cel: średnia ≥ 1.80` : 'Cel: średnia ≥ 1.80';
 
   const scenHTML = scenarios.map((sc, i) => {
     const isFirst = i === 0;
@@ -650,63 +650,63 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
     const cls = isFirst ? 'scenario-card best' : isLast ? 'scenario-card hardest' : 'scenario-card';
     const rows = sc.slots.map(slot => {
       const gc = gradeClass(slot.grade);
-      return \`
+      return `
         <div class="sc-row">
           <div class="sc-badge \${gc}">\${slot.name}</div>
           <div class="sc-info">waga <strong>\${slot.weight}</strong></div>
-        </div>\`;
+        </div>`;
     }).join('<div class="sc-sep"></div>');
     const avgOk = sc.avg >= TARGET_AVG;
-    return \`
+    return `
       <div class="\${cls}">
-        <div class="sc-label">\${isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : \`Scenariusz \${String.fromCharCode(65+i)}\`}</div>
+        <div class="sc-label">\${isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : `Scenariusz \${String.fromCharCode(65+i)}`}</div>
         \${rows}
         <div class="sc-sep"></div>
         <div class="sc-result">Wynik: <strong>\${sc.avg.toFixed(2)}</strong> \${avgOk ? '✅' : '❌'}\${sc.margin < 0.06 && avgOk ? ' (margines '+sc.margin.toFixed(2)+'!)' : ''}</div>
-      </div>\`;
+      </div>`;
   }).join('');
 
   // Kalkulator — slajdery tylko dla pozostałych slotów
   const sliderRows = remaining.map((w, i) => {
-    const id = \`slot_\${i}\`;
-    const vid = \`vslot_\${i}\`;
-    const wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : \`waga \${w}\`;
-    return \`
+    const id = `slot_\${i}`;
+    const vid = `vslot_\${i}`;
+    const wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : `waga \${w}`;
+    return `
       <div class="slider-row">
         <label>Ocena \${wLabel} #\${i+1}</label>
         <input type="range" id="\${id}" data-weight="\${w}" min="1" max="11" value="5" step="1">
         <div class="slider-val" id="\${vid}">3</div>
-      </div>\`;
+      </div>`;
   }).join('');
 
   const alertNeed = remSumW > 0
-    ? \`Potrzeba z pozostałych <strong>\${remaining.length}</strong> ocen łącznie <strong>\${needed.toFixed(2)} pkt ważonych</strong> (śr. \${neededAvg.toFixed(2)}/ocenę).\`
+    ? `Potrzeba z pozostałych <strong>\${remaining.length}</strong> ocen łącznie <strong>\${needed.toFixed(2)} pkt ważonych</strong> (śr. \${neededAvg.toFixed(2)}/ocenę).`
     : '';
   const alertWarn = maxPossible < TARGET_AVG
-    ? \`<br><strong style="color:var(--danger)">⚠ Nawet same szóstki nie wystarczą! Max możliwa: \${maxPossible.toFixed(2)}</strong>\`
+    ? `<br><strong style="color:var(--danger)">⚠ Nawet same szóstki nie wystarczą! Max możliwa: \${maxPossible.toFixed(2)}</strong>`
     : rem06 > 0
-      ? \`<br>Oceny z wagą <strong>0.6 decydują</strong> — jedynka tam niszczy szanse. Minimum to <strong>3</strong> na każdej dużej.\`
+      ? `<br>Oceny z wagą <strong>0.6 decydują</strong> — jedynka tam niszczy szanse. Minimum to <strong>3</strong> na każdej dużej.`
       : '';
 
-  box.innerHTML = \`
+  box.innerHTML = `
     <div class="mission-title">🎯 Co Wojtek MUSI dostać</div>
     <div class="mission-subtitle">\${subtitle}</div>
-    \${scenarios.length ? \`<div class="scenario-grid">\${scenHTML}</div>\` : ''}
+    \${scenarios.length ? `<div class="scenario-grid">\${scenHTML}</div>` : ''}
     <div class="mission-alert">
       <div class="al-title">⚡ Kluczowy wniosek</div>
       Obecna średnia: <strong>\${curAvg.toFixed(2)}</strong> · \${alertNeed}\${alertWarn}
     </div>
-    \${remaining.length > 0 ? \`
+    \${remaining.length > 0 ? `
     <div class="slider-section">
       <div class="slider-label">🎮 Kalkulator — ustaw planowane oceny i sprawdź czy zdasz</div>
       \${sliderRows}
       <div class="slider-result" id="sliderResult"></div>
-    </div>\` : ''}
-  \`;
+    </div>` : ''}
+  `;
 
   // Podepnij słuchacze sliderów
   remaining.forEach((w, i) => {
-    const el = document.getElementById(\`slot_\${i}\`);
+    const el = document.getElementById(`slot_\${i}`);
     if (el) el.addEventListener('input', () => updateDynSlider(curSumGW, curSumW, remaining, grandTotalW));
   });
   updateDynSlider(curSumGW, curSumW, remaining, grandTotalW);
@@ -745,7 +745,7 @@ function calcScenarios(curSumGW, curSumW, remaining, grandTotalW) {
   const seen = new Set();
   const unique = [];
   for (const v of valid) {
-    const key = \`\${v.g06}_\${v.g04}\`;
+    const key = `\${v.g06}_\${v.g04}`;
     if (!seen.has(key)) { seen.add(key); unique.push(v); }
     if (unique.length >= 5) break;
   }
@@ -763,8 +763,8 @@ function calcScenarios(curSumGW, curSumW, remaining, grandTotalW) {
 function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
   let futureGW = 0;
   for (let i = 0; i < remaining.length; i++) {
-    const el = document.getElementById(\`slot_\${i}\`);
-    const vel = document.getElementById(\`vslot_\${i}\`);
+    const el = document.getElementById(`slot_\${i}`);
+    const vel = document.getElementById(`vslot_\${i}`);
     if (!el || !vel) continue;
     const raw = parseInt(el.value);
     const g = GRADE_MAP[raw] || GRADE_MAP[1];
@@ -777,7 +777,7 @@ function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
   const diff = finalAvg - TARGET_AVG;
   const res = document.getElementById('sliderResult');
   if (!res) return;
-  res.innerHTML = \`
+  res.innerHTML = `
     <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;">
       <div class="res-avg \${ok?'ok':'fail'}">\${finalAvg.toFixed(2)}</div>
       <div style="font-size:0.75rem;color:\${ok?'var(--good)':'var(--danger)'}">
@@ -788,7 +788,7 @@ function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
       Suma ważona z nowych: \${futureGW.toFixed(2)} · Łączna GW: \${(curSumGW+futureGW).toFixed(2)} / \${grandTotalW} ·
       Margines: <span style="color:\${ok?'var(--good)':'var(--danger)'}">\${diff>=0?'+':''}\${diff.toFixed(3)}</span>
     </div>
-  \`;
+  `;
 }
 // ────────────────────────────────────────────────────────────────────────────
 
