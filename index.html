@@ -257,8 +257,103 @@
   </div>
 
   <!-- ══ MISJA: MINIMALNE OCENY ══ -->
-  <div class="mission-section" id="missionSection">
-    <!-- renderowane dynamicznie przez renderMission() -->
+  <div class="mission-section">
+    <div class="mission-title">🎯 Co Wojtek MUSI dostać</div>
+    <div class="mission-subtitle">Zostały: 2 oceny z wagą 0.6 + 2 oceny z wagą 0.4 · Cel: średnia ≥ 1.80</div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card best">
+        <div class="sc-label">Scenariusz A — najłatwiejszy</div>
+        <div class="sc-row">
+          <div class="sc-badge grade-mid">3</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-row">
+          <div class="sc-badge grade-low">3</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-result">Wynik: średnia <strong>1.88</strong> ✅</div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-label">Scenariusz B — zróżnicowany</div>
+        <div class="sc-row">
+          <div class="sc-badge grade-high">4</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-row">
+          <div class="sc-badge grade-low">1</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-result">Wynik: średnia <strong>1.85</strong> ✅</div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-label">Scenariusz C — duże ważne</div>
+        <div class="sc-row">
+          <div class="sc-badge grade-mid">3+</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-row">
+          <div class="sc-badge grade-low">2</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-result">Wynik: średnia <strong>1.88</strong> ✅</div>
+      </div>
+
+      <div class="scenario-card hardest">
+        <div class="sc-label">Scenariusz D — ryzykowny</div>
+        <div class="sc-row">
+          <div class="sc-badge grade-mid">2+</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-row">
+          <div class="sc-badge grade-mid">3</div>
+          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
+        </div>
+        <div class="sc-sep"></div>
+        <div class="sc-result">Wynik: średnia <strong>1.85</strong> ✅ (margines 0.05!)</div>
+      </div>
+    </div>
+
+    <div class="mission-alert">
+      <div class="al-title">⚡ Kluczowy wniosek</div>
+      Obecna średnia: <strong>1.43</strong> · Potrzeba z przyszłych 4 ocen łącznie <strong>5.28 pkt ważonych</strong>.<br>
+      Oceny z wagą <strong>0.6 decydują</strong> — każda jedynka tam niszczy szanse. Trójka na dużej wadze to minimum.<br>
+      Jeśli dostaniesz <strong>3 i 3</strong> na 0.6 oraz <strong>3 i 3</strong> na 0.4 → jesteś bezpieczny z marginesem.
+    </div>
+
+    <div class="slider-section">
+      <div class="slider-label">🎮 Kalkulator: wpisz planowane oceny i sprawdź czy zdasz</div>
+      <div class="slider-row">
+        <label>Ocena 0.6 (duża) #1</label>
+        <input type="range" id="s06a" min="1" max="12" value="6" step="1">
+        <div class="slider-val" id="v06a">3</div>
+      </div>
+      <div class="slider-row">
+        <label>Ocena 0.6 (duża) #2</label>
+        <input type="range" id="s06b" min="1" max="12" value="6" step="1">
+        <div class="slider-val" id="v06b">3</div>
+      </div>
+      <div class="slider-row">
+        <label>Ocena 0.4 (średnia) #1</label>
+        <input type="range" id="s04a" min="1" max="12" value="6" step="1">
+        <div class="slider-val" id="v04a">3</div>
+      </div>
+      <div class="slider-row">
+        <label>Ocena 0.4 (średnia) #2</label>
+        <input type="range" id="s04b" min="1" max="12" value="6" step="1">
+        <div class="slider-val" id="v04b">3</div>
+      </div>
+      <div class="slider-result" id="sliderResult"></div>
+    </div>
   </div>
   <!-- ══════════════════════════════ -->
 
@@ -287,125 +382,16 @@ const FALLBACK_QUOTES = [
 ];
 
 async function loadQuotes() {
-  return [
-  { "text": "Matematyka to nie tortura. To trening mózgu. A Twój mózg jest gotowy.", "autor": "— Coach Wojtek" },
-  { "text": "Każda godzina nauki to jeden krok bliżej do tej 1.8. Licz.", "autor": "— Kalkulator Przeznaczenia" },
-  { "text": "Łatwe rzeczy są dla tych, co się nie rozwijają. Ty się rozwijasz.", "autor": "— Euklides (prawie)" },
-  { "text": "Wzory można wykuć. Wolę widzieć kogoś, kto kuć nie odmawia.", "autor": "— Każdy dobry nauczyciel" },
-  { "text": "Nie pytaj co matematyka może zrobić dla Ciebie. Zapytaj co Ty możesz zrobić dla swojej matury.", "autor": "— Filozof z ławki" },
-  { "text": "10 czerwca to nie koniec. To punkt startowy nowego Wojtka.", "autor": "— Przyszłość" },
-  { "text": "Trudność zadania jest wprost proporcjonalna do Twojego wzrostu po jej rozwiązaniu.", "autor": "— Twierdzenie Wojtka" },
-  { "text": "Jeden dzień nauki dzisiaj = mniej strachu jutro.", "autor": "— Prosta Arytmetyka Życia" },
-  { "text": "Nawet Gauss zaczynał od podstaw. Zacznij teraz.", "autor": "— Carl Friedrich Gauss (serio)" },
-  { "text": "Zraź się raz. Odpocznij chwilę. Wróć do zadań. To właśnie zwycięstwo.", "autor": "— Wojtek, przyszłość" },
-  { "text": "Średnia 1.8 nie spada z nieba. Ale można ją zbudować ocena po ocenie.", "autor": "— Statystyka" },
-  { "text": "Najlepsza pora na naukę była wczoraj. Druga najlepsza – teraz.", "autor": "— Przysłowie (zaadaptowane)" },
-  { "text": "Nie musisz kochać matematyki. Musisz ją tylko zdać.", "autor": "— Pragmatyczny Mentor" },
-  { "text": "Strach przed klasówką jest mniejszy niż żal z powodu nierobienia nic.", "autor": "— Twoja Przyszłość" },
-  { "text": "Każde zadanie, które rozwiążesz, to jedno mniej na sprawdzianie.", "autor": "— Rachunek Prawdopodobieństwa" },
-  { "text": "Geniusz to 1% talentu i 99% potu. Zacznij pocić się z matematyki.", "autor": "— Thomas Edison (zaadaptowane)" },
-  { "text": "Nie ma skrótu do miejsca, do którego warto dotrzeć.", "autor": "— Beverly Sills" },
-  { "text": "Sukces to suma małych wysiłków powtarzanych dzień po dniu.", "autor": "— Robert Collier" },
-  { "text": "Kiedy myślisz, że nie możesz, pomyśl o tym, dlaczego musisz.", "autor": "— Nieznany mędrzec" },
-  { "text": "Przyszły Wojtek patrzy wstecz i dziękuje Wojtekowi dzisiejszemu za każdą godzinę nauki.", "autor": "— Chronologia Sukcesu" },
-  { "text": "Matematyka jest językiem, którym Bóg napisał wszechświat. Naucz się go chociaż trochę.", "autor": "— Galileusz (prawie)" },
-  { "text": "Nie bój się być powolny. Bój się stać w miejscu.", "autor": "— Chińskie przysłowie" },
-  { "text": "Każdy ekspert był kiedyś nowicjuszem. Każdy mistrz był kiedyś beznadziejny.", "autor": "— Rutyna Postępu" },
-  { "text": "Klasówka nie jest końcem świata. Ale dobre przygotowanie czyni ją końcem stresu.", "autor": "— Mądrość Zdającego" },
-  { "text": "Wyobraź sobie, jak dobrze się poczujesz, gdy zobaczysz tę ocenę. Teraz zapracuj na to uczucie.", "autor": "— Wyobraźnia Motywacyjna" },
-  { "text": "Siła nie pochodzi z wygrywania. Twoje walki rozwijają Twoje siły.", "autor": "— Arnold Schwarzenegger" },
-  { "text": "Dziś jest zawsze najlepszy dzień, żeby zacząć.", "autor": "— Każdy Poniedziałek w Historii" },
-  { "text": "Matematyka boli tylko przez chwilę. Niedostateczna średnia boli cały rok.", "autor": "— Brutalna Prawda" },
-  { "text": "Otwórz zeszyt. Weź długopis. Zrób jedno zadanie. Reszta przyjdzie sama.", "autor": "— Metoda Małych Kroków" },
-  { "text": "Nie musisz widzieć całych schodów. Musisz tylko zrobić pierwszy krok.", "autor": "— Martin Luther King Jr." },
-  { "text": "Porównuj się tylko z wczorajszym sobą. I bądź dziś trochę lepszy.", "autor": "— Jordan Peterson (prawie)" },
-  { "text": "Twój mózg jest jak mięsień. Im więcej go ćwiczysz, tym silniejszy się staje.", "autor": "— Neurobiologia Motywacji" },
-  { "text": "Za każdym razem, gdy siadasz do nauki, inwestujesz w siebie. To najlepsza inwestycja.", "autor": "— Warren Buffett Matematyki" },
-  { "text": "Nie licz ile zostało. Licz ile już zrobiłeś.", "autor": "— Perspektywa Zwycięzcy" },
-  { "text": "Każda godzina poświęcona nauce to godzina odebrana niepewności.", "autor": "— Równanie Spokoju" },
-  { "text": "Możesz narzekać, że matematyka jest trudna. Albo możesz ją opanować. Wybór należy do Ciebie.", "autor": "— Dwa Światy" },
-  { "text": "Różnica między osobą, która osiąga cel, a tą, która go nie osiąga, to wytrwałość.", "autor": "— Calvin Coolidge" },
-  { "text": "Kiedy jest ciężko, przypomnij sobie dlaczego zacząłeś.", "autor": "— Korzeń Motywacji" },
-  { "text": "Jeden zły wynik nie definiuje Cię. Sposób, w jaki na niego reagujesz – owszem.", "autor": "— Psychologia Sportu" },
-  { "text": "Najpierw rozwiąż problem. Potem napisz rozwiązanie. Tak działa matematyka i życie.", "autor": "— Algorytm Sukcesu" },
-  { "text": "Ucz się tak, jakby egzamin był jutro. Bo pewnego dnia będzie.", "autor": "— Prawo Murphy'ego Szkolnego" },
-  { "text": "Twoja jedyna konkurencja to osoba, którą byłeś wczoraj.", "autor": "— Filozofia Samodoskonalenia" },
-  { "text": "Nie ma czegoś takiego jak za późno, dopóki masz jeszcze czas. A masz go jeszcze sporo.", "autor": "— Zegar Wojtka" },
-  { "text": "Wiedza matematyczna to narzędzie. Naucz się nim posługiwać, a otworzą się drzwi, których nie widzisz.", "autor": "— Kowal Przyszłości" },
-  { "text": "Każde rano to nowa szansa. Nie marnuj jej.", "autor": "— Wschód Słońca nr 1" },
-  { "text": "Małe postępy są nadal postępami. Nie zatrzymuj się.", "autor": "— Teoria Małych Kroków" },
-  { "text": "Zanim powiesz 'nie umiem', powiedz 'jeszcze nie umiem'.", "autor": "— Carol Dweck (Growth Mindset)" },
-  { "text": "Trudne chwile budują charakter. A charakter buduje przyszłość.", "autor": "— Szkoła Życia" },
-  { "text": "Nie szukaj motywacji. Buduj dyscyplinę. Motywacja przychodzi i odchodzi. Dyscyplina zostaje.", "autor": "— Jocko Willink (prawie)" },
-  { "text": "Matura to maraton, nie sprint. Ale maratony też się wygrywa, krok po kroku.", "autor": "— Biegacz Długodystansowy" },
-  { "text": "Im więcej ćwiczysz, tym więcej szczęścia masz na klasówce.", "autor": "— Gary Player (zaadaptowane)" },
-  { "text": "Zrób dziś to, czego inni nie chcą robić. A jutro będziesz mieć to, czego inni nie mają.", "autor": "— Jerry Rice" },
-  { "text": "Matematyka to jedyny przedmiot, gdzie kupujesz 50 arbuzów i nikt nie pyta po co.", "autor": "— Klasyczna Obserwacja" },
-  { "text": "Nauka to inwestycja z najwyższą stopą zwrotu w historii ludzkości.", "autor": "— Benjamin Franklin (prawie)" },
-  { "text": "Kiedy rezygnujesz, pamiętaj dlaczego zacząłeś.", "autor": "— Wewnętrzny Głos" },
-  { "text": "1.8 to tylko liczba. Ale Twoja determinacja, żeby ją zdobyć – to coś bezcennego.", "autor": "— Arytmetyka Charakteru" },
-  { "text": "Błędy w zadaniach to Twoi najlepsi nauczyciele. Nie wykreślaj ich. Analizuj.", "autor": "— Metoda Naukowa" },
-  { "text": "Nie musisz być najlepszy w klasie. Musisz być lepszy niż minimalna średnia.", "autor": "— Cel Operacyjny" },
-  { "text": "Zrób plan. Trzymaj się planu. Świętuj wynik.", "autor": "— Trójkąt Sukcesu" },
-  { "text": "Twoja głowa wie więcej, niż myślisz. Zaufaj jej na egzaminie.", "autor": "— Podświadomość Zdającego" },
-  { "text": "Ucz się, śpij, powtarzaj. Mózg utrwala wiedzę podczas snu. Nie zarywaj nocy.", "autor": "— Neuronaukowiec" },
-  { "text": "Każda godzina snu przed klasówką jest warta dwóch godzin nauki po północy.", "autor": "— Biologia Pamięci" },
-  { "text": "Jesteś bliżej celu, niż Ci się wydaje. Nie odpuszczaj teraz.", "autor": "— GPS Motywacji" },
-  { "text": "Odwaga to nie brak strachu. To działanie pomimo niego. Otwórz książkę.", "autor": "— Nelson Mandela (prawie)" },
-  { "text": "Twoja przyszłość nie zależy od jednej oceny. Ale od nawyku, który teraz budujesz.", "autor": "— Długi Horyzont" },
-  { "text": "Pierwsze 5 minut nauki jest najtrudniejsze. Potem mózg się rozkręca. Zacznij.", "autor": "— Fizjologia Skupienia" },
-  { "text": "Nie czekaj na idealny moment. Ten moment nigdy nie przyjdzie. Zacznij teraz, z tym co masz.", "autor": "— Theodore Roosevelt" },
-  { "text": "Sukcesem nie jest nigdy nie upadać. Sukcesem jest wstawać za każdym razem.", "autor": "— Winston Churchill" },
-  { "text": "Matematyka uczy nas, że każdy problem ma rozwiązanie. Trzeba tylko znaleźć właściwą metodę.", "autor": "— Filozofia Równań" },
-  { "text": "Wiedza zdobyta z trudem zostaje na zawsze. Wiedza przyswojona łatwo ucieka szybko.", "autor": "— Paradoks Nauki" },
-  { "text": "Dla kogoś z zewnątrz Twój wysiłek może wyglądać niepozornie. Dla Twojej przyszłości jest wszystkim.", "autor": "— Perspektywa Czasu" },
-  { "text": "Granica Twoich możliwości jest dalej, niż myślisz.", "autor": "— Odkrywca Potencjału" },
-  { "text": "Nie pytaj czy dasz radę. Pytaj jak to zrobić.", "autor": "— Zmiana Nastawienia" },
-  { "text": "Matematyka to gra. Poznaj jej zasady, a zaczniesz wygrywać.", "autor": "— Gracz Strategiczny" },
-  { "text": "Koncentracja to supermoc. Ćwicz ją tak samo jak wzory.", "autor": "— Sztuka Skupienia" },
-  { "text": "Każdy, kto przestał się uczyć, jest stary. Każdy, kto się uczy, jest młody.", "autor": "— Henry Ford" },
-  { "text": "Dziś jest dzień, w którym zaczniesz być Wojtkiem, który zdał matmę.", "autor": "— Punkt Zero" },
-  { "text": "Nie ma skomplikowanych zadań. Są tylko zadania, które jeszcze nie zostały zrozumiane.", "autor": "— René Descartes (prawie)" },
-  { "text": "Twoja wytrwałość dzisiaj to Twoja pewność siebie jutro.", "autor": "— Cykl Wzrostu" },
-  { "text": "Ból nauki jest tymczasowy. Duma z wyniku jest wieczna.", "autor": "— Bilans Zysku" },
-  { "text": "Zamiast mówić 'to za trudne', powiedz 'potrzebuję więcej czasu na to zadanie'. Różnica jest ogromna.", "autor": "— Słowa Mają Moc" },
-  { "text": "Ucz się jakbyś miał żyć wiecznie. Żyj jakbyś miał umrzeć jutro.", "autor": "— Mahatma Gandhi" },
-  { "text": "Twój nauczyciel może Cię zainspirować, ale to Ty musisz się nauczyć.", "autor": "— Odpowiedzialność Ucznia" },
-  { "text": "Nie porównuj swojego rozdziału pierwszego z czyjimś rozdziałem dwudziestym.", "autor": "— Własna Droga" },
-  { "text": "Dyscyplina to wybieranie tego, czego chcesz najbardziej, ponad tym, czego chcesz teraz.", "autor": "— Abraham Lincoln (prawie)" },
-  { "text": "Każde zadanie domowe to trening przed wielkim meczem. Nie odpuszczaj treningu.", "autor": "— Analogia Sportowa" },
-  { "text": "Zanim skończy się maj, możesz zmienić swoją średnią. Zacznij liczenie.", "autor": "— Maj Wojtka" },
-  { "text": "Nikt nie żałował, że się za dużo uczył. Wielu żałowało, że uczyli się za mało.", "autor": "— Archiwum Żalów" },
-  { "text": "Twój mózg jest plastyczny. Nowe synapsy tworzą się z każdym rozwiązanym zadaniem.", "autor": "— Neuroplastyczność" },
-  { "text": "Jedna sesja nauki dziennie trzyma panikę z daleka.", "autor": "— Medycyna Szkolna" },
-  { "text": "Wynik nie jest przypadkowy. Jest sumą wszystkich godzin, które włożyłeś lub nie włożyłeś.", "autor": "— Równanie Finałowe" },
-  { "text": "Matematyka to jedyny język zrozumiały w każdym kraju. Bądź wielojęzyczny.", "autor": "— Obywatel Świata" },
-  { "text": "Nie musisz wiedzieć wszystkiego. Musisz wiedzieć wystarczająco dużo. I to wystarczające jest w zasięgu.", "autor": "— Pragmatyzm Zdającego" },
-  { "text": "Cierpliwość + praca = wynik. To jedyne równanie, które musisz znać na dziś.", "autor": "— Wzór Wojtka" },
-  { "text": "Najlepszy czas na zasadzenie drzewa był 20 lat temu. Drugi najlepszy czas to teraz. Otwórz podręcznik.", "autor": "— Przysłowie Chińskie (zaadaptowane)" },
-  { "text": "Każda klasówka to nie wyrok. To informacja zwrotna. Wyciągnij wnioski i idź dalej.", "autor": "— Pętla Wzrostu" },
-  { "text": "Aspiracje bez działania to marzenia senne. Dodaj działanie i marzenia stają się planami.", "autor": "— Różnica Kluczowa" },
-  { "text": "Ile zadań zrobiłeś dziś? Jeśli zero – zacznij teraz. Jeśli jedno – zrób drugie.", "autor": "— Rachunek Dnia" },
-  { "text": "Nie oceniaj dnia po ilości stresu, lecz po ilości wykonanej pracy.", "autor": "— Miara Produktywności" },
-  { "text": "Każdy mistrz kiedyś siedział tam, gdzie Ty siedzisz teraz i miał te same wątpliwości.", "autor": "— Historia Mistrzów" },
-  { "text": "Praca, którą wykonujesz teraz, kiedy nikt nie patrzy, definiuje wynik, który zobaczą wszyscy.", "autor": "— Etyka Pracy" },
-  { "text": "Nie odkładaj na jutro nauki, którą możesz zrobić dziś. Jutro będzie inne jutro do nauki.", "autor": "— Pułapka Prokrastynacji" },
-  { "text": "Wiara w siebie jest pierwszym krokiem. Drugi krok to otwarcie zeszytu.", "autor": "— Dwuetapowy Plan" },
-  { "text": "Jesteś o wiele silniejszy niż myślisz. Matematyka Ci to udowodni.", "autor": "— Test Siły" },
-  { "text": "Każdy dzień bez nauki to dzień stracony. Każdy dzień z nauką to dzień zainwestowany.", "autor": "— Ekonomia Czasu" },
-  { "text": "Pisz równania. Rozwiązuj je. Nie rozumiesz? Pisz jeszcze raz. Zrozumienie przyjdzie.", "autor": "— Metoda Powtórzeń" },
-  { "text": "Matematyka nie dyskryminuje. Daje tyle, ile jej dasz.", "autor": "— Sprawiedliwy System" },
-  { "text": "Każdy sprawdzian to tylko pomiar postępu. Boisz się termometru? Nie. Więc nie bój się sprawdzianu.", "autor": "— Analogia Diagnostyczna" },
-  { "text": "Ucz się mądrze, nie tylko ciężko. Ale najpierw naucz się ciężko.", "autor": "— Sekwencja Nauki" },
-  { "text": "Zostań po lekcjach. Zapytaj nauczyciela. Zrób coś, co inni nie zrobią.", "autor": "— Przewaga 1%" },
-  { "text": "Za każdą trudną klasówką kryje się wersja Ciebie, która sobie z nią poradziła.", "autor": "— Równoległa Oś Czasu" },
-  { "text": "Nawet jeśli idziesz wolno, idziesz w dobrym kierunku. Nie zatrzymuj się.", "autor": "— Confucius (prawie)" },
-  { "text": "Dzisiaj trudne. Jutro trudne. Za tydzień łatwiejsze. Za miesiąc oczywiste. Nie rezygnuj w środku.", "autor": "— Krzywa Nauki" },
-  { "text": "Twój wynik na maturze to nie koniec historii. To jeden z wielu rozdziałów.", "autor": "— Powieść Życia" },
-  { "text": "Rób zadania, których nie rozumiesz. Właśnie dlatego, że ich nie rozumiesz.", "autor": "— Paradoks Nauki" },
-  { "text": "Za każdym 'nie umiem' kryje się 'jeszcze nie próbowałem wystarczająco'.", "autor": "— Słownik Możliwości" },
-  { "text": "Wojtek, który nie dał rady, nie istnieje. Istnieje tylko Wojtek, który jeszcze nie skończył próbować.", "autor": "— Definicja Wojtka" }
-];
+  try {
+    const res = await fetch('cytaty.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) throw new Error('Pusta tablica');
+    return data;
+  } catch (err) {
+    console.warn('Nie można załadować cytaty.json, używam fallbacku:', err.message);
+    return FALLBACK_QUOTES;
+  }
 }
 
 async function updateQuote() {
@@ -450,19 +436,9 @@ function updateCountdown() {
 
 async function loadGrades() {
   try {
-    const data = [
-  { "ocena": 1, "waga": 0.4, "data": "2025-11-02" },
-  { "ocena": 1, "waga": 0.2, "data": "2025-11-17" },
-  { "ocena": 1, "waga": 0.4, "data": "2025-11-24" },
-  { "ocena": 1, "waga": 0.6, "data": "2025-11-26" },
-  { "ocena": "3+", "waga": 0.4, "data": "2025-12-08" },
-  { "ocena": 2, "waga": 0.6, "data": "2026-01-19" },
-  { "ocena": 2, "waga": 0.4, "data": "2026-01-26" },
-  { "ocena": 1, "waga": 0.4, "data": "2026-03-27" },
-  { "ocena": 1, "waga": 0.6, "data": "2026-04-02" },
-  { "ocena": 1, "waga": 0.6, "data": "2026-04-17" },
-  { "ocena": 1, "waga": 0.6, "data": "2026-04-28" }
-];
+    const res = await fetch('oceny.json');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
     if (!Array.isArray(data)) throw new Error('JSON musi być tablicą');
     
     grades = data.map(g => ({
@@ -474,10 +450,6 @@ async function loadGrades() {
     renderTable();
     updateStats();
     drawChart();
-    // Renderuj sekcję misji dynamicznie na podstawie załadowanych ocen
-    const _sumGW = grades.reduce((s,g) => s + g.ocena * g.waga, 0);
-    const _sumW  = grades.reduce((s,g) => s + g.waga, 0);
-    renderMission(grades, _sumGW, _sumW);
   } catch (err) {
     document.getElementById('errorBox').style.display = 'block';
     document.getElementById('gradesTable').style.display = 'none';
@@ -666,16 +638,24 @@ function drawChart() {
 window.addEventListener('resize', drawChart);
 init();
 
-// ── MISJA DYNAMICZNA ────────────────────────────────────────────────────────
-// Oczekiwany zestaw pozostałych ocen (wagi do zdobycia)
-// Porównujemy z obecnymi ocenami i pokazujemy tylko te sloty, które jeszcze nie wpłynęły
-const EXPECTED_FUTURE = [0.6, 0.6, 0.4, 0.4]; // wagi ocen, które Wojtek ma jeszcze dostać
-const TARGET_AVG = 1.8;
+// ── KALKULATOR SLIDERÓW ─────────────────────────────────────────────────────
+const CURRENT_SUM_GW = 6.6;
+const CURRENT_SUM_W  = 4.6;
+const TOTAL_SUM_W    = 6.6;
+const TARGET_AVG     = 1.8;
 
 const GRADE_MAP = {
-  1:{val:1,name:'1'}, 2:{val:1.5,name:'1+'}, 3:{val:2,name:'2'}, 4:{val:2.5,name:'2+'},
-  5:{val:3,name:'3'}, 6:{val:3.5,name:'3+'}, 7:{val:4,name:'4'}, 8:{val:4.5,name:'4+'},
-  9:{val:5,name:'5'}, 10:{val:5.5,name:'5+'}, 11:{val:6,name:'6'},
+  1:  {val: 1,   name: '1'},
+  2:  {val: 1.5, name: '1+'},
+  3:  {val: 2,   name: '2'},
+  4:  {val: 2.5, name: '2+'},
+  5:  {val: 3,   name: '3'},
+  6:  {val: 3.5, name: '3+'},
+  7:  {val: 4,   name: '4'},
+  8:  {val: 4.5, name: '4+'},
+  9:  {val: 5,   name: '5'},
+  10: {val: 5.5, name: '5+'},
+  11: {val: 6,   name: '6'},
 };
 
 function gradeColor(v) {
@@ -685,225 +665,42 @@ function gradeColor(v) {
   return 'var(--danger)';
 }
 
-function gradeClass(v) {
-  if (v >= 4) return 'grade-high';
-  if (v >= 3) return 'grade-mid';
-  if (v >= 2) return 'grade-low';
-  return 'grade-low';
-}
-
-function calcFutureSlots(loadedGrades) {
-  // Liczymy ile ocen z każdą wagą już jest w pliku PONAD bazowe 10 ocen
-  // Baza: zestaw z początku (2x0.6, 3x0.4, 3x0.4+, 1x0.2, 1x0.6 itd.) — łącznie 10 ocen z sumą wag 4.6
-  // Przyszłe = oceny dodane PO tych 10 (czyli te z wagą 0.6 lub 0.4 co przyszły później)
-  // Prościej: patrzymy ile ocen jest > 10 (pierwsze 10 to baza), reszta to "nowe"
-  
-  // Baza to pierwsze 10 wpisów w chronologicznej kolejności
-  const BASE_COUNT = 10;
-  const newGrades = loadedGrades.slice(BASE_COUNT); // oceny dodane po bazie
-  
-  // Oblicz ile slotów zostało
-  const remaining = [...EXPECTED_FUTURE];
-  for (const g of newGrades) {
-    const idx = remaining.indexOf(g.waga);
-    if (idx !== -1) remaining.splice(idx, 1);
-  }
-  return { remaining, newGrades };
-}
-
-function renderMission(loadedGrades, curSumGW, curSumW) {
-  const totalExpectedW = curSumW; // już zawiera wszystkie oceny z pliku
-  // Dodaj oczekiwane przyszłe wagi żeby policzyć max możliwą sumę wag
-  const { remaining } = calcFutureSlots(loadedGrades);
-  
-  const remSumW = remaining.reduce((s, w) => s + w, 0);
-  const grandTotalW = curSumW + remSumW;
-  const needed = TARGET_AVG * grandTotalW - curSumGW;
-  const neededAvg = remSumW > 0 ? needed / remSumW : 0;
-  const maxPossible = remSumW > 0 ? (curSumGW + remSumW * 6) / grandTotalW : curSumGW / curSumW;
-  const curAvg = curSumW > 0 ? curSumGW / curSumW : 0;
-
-  const box = document.getElementById('missionSection');
-  if (!box) return;
-
-  // Policz ile zostało z każdej wagi
-  const rem06 = remaining.filter(w => w === 0.6).length;
-  const rem04 = remaining.filter(w => w === 0.4).length;
-
-  // Jeśli już zdał lub brak slotów
-  if (curAvg >= TARGET_AVG && remaining.length === 0) {
-    box.innerHTML = `
-      <div class="mission-title">🏆 MISJA ZAKOŃCZONA!</div>
-      <div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.3);padding:1.5rem;margin-top:1rem;font-family:'Space Mono',monospace;font-size:0.9rem;line-height:1.8;">
-        ✅ Wojtek zdał! Średnia ważona <strong>${curAvg.toFixed(2)}</strong> przekracza wymagane 1.8.<br>
-        Wszystkie oczekiwane oceny zostały zdobyte. GRATULACJE! 🎉
-      </div>
-    `;
-    return;
-  }
-
-  if (remaining.length === 0 && curAvg < TARGET_AVG) {
-    box.innerHTML = `
-      <div class="mission-title">⚠️ Brak więcej slotów</div>
-      <div class="mission-alert" style="margin-top:1rem;">
-        <div class="al-title">Sytuacja krytyczna</div>
-        Wszystkie oczekiwane oceny zostały dodane, ale średnia <strong>${curAvg.toFixed(2)}</strong> jest poniżej 1.8.<br>
-        Porozmawiaj z nauczycielem o dodatkowych ocenach.
-      </div>
-    `;
-    return;
-  }
-
-  // Scenariusze — generuj automatycznie na podstawie pozostałych slotów
-  const scenarios = calcScenarios(curSumGW, curSumW, remaining, grandTotalW);
-
-  // Buduj HTML
-  let subtitleParts = [];
-  if (rem06 > 0) subtitleParts.push(`\${rem06} ocen\${rem06===1?'a':'y'} z wagą 0.6`);
-  if (rem04 > 0) subtitleParts.push(`\${rem04} ocen\${rem04===1?'a':'y'} z wagą 0.4`);
-  const subtitle = subtitleParts.length ? `Zostało: \${subtitleParts.join(' + ')} · Cel: średnia ≥ 1.80` : 'Cel: średnia ≥ 1.80';
-
-  const scenHTML = scenarios.map((sc, i) => {
-    const isFirst = i === 0;
-    const isLast = i === scenarios.length - 1 && scenarios.length > 1;
-    const cls = isFirst ? 'scenario-card best' : isLast ? 'scenario-card hardest' : 'scenario-card';
-    const rows = sc.slots.map(slot => {
-      const gc = gradeClass(slot.grade);
-      return `
-        <div class="sc-row">
-          <div class="sc-badge \${gc}">\${slot.name}</div>
-          <div class="sc-info">waga <strong>\${slot.weight}</strong></div>
-        </div>`;
-    }).join('<div class="sc-sep"></div>');
-    const avgOk = sc.avg >= TARGET_AVG;
-    return `
-      <div class="\${cls}">
-        <div class="sc-label">\${isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : 'Scenariusz ' + String.fromCharCode(65+i)}</div>
-        \${rows}
-        <div class="sc-sep"></div>
-        <div class="sc-result">Wynik: <strong>\${sc.avg.toFixed(2)}</strong> \${avgOk ? '✅' : '❌'}\${sc.margin < 0.06 && avgOk ? ' (margines '+sc.margin.toFixed(2)+'!)' : ''}</div>
-      </div>`;
-  }).join('');
-
-  // Kalkulator — slajdery tylko dla pozostałych slotów
-  const sliderRows = remaining.map((w, i) => {
-    const id = `slot_\${i}`;
-    const vid = `vslot_\${i}`;
-    const wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : 'waga ' + w;
-    return `
-      <div class="slider-row">
-        <label>Ocena \${wLabel} #\${i+1}</label>
-        <input type="range" id="\${id}" data-weight="\${w}" min="1" max="11" value="5" step="1">
-        <div class="slider-val" id="\${vid}">3</div>
-      </div>`;
-  }).join('');
-
-  const alertNeed = remSumW > 0
-    ? `Potrzeba z pozostałych <strong>\${remaining.length}</strong> ocen łącznie <strong>\${needed.toFixed(2)} pkt ważonych</strong> (śr. \${neededAvg.toFixed(2)}/ocenę).`
-    : '';
-  const alertWarn = maxPossible < TARGET_AVG
-    ? `<br><strong style="color:var(--danger)">⚠ Nawet same szóstki nie wystarczą! Max możliwa: \${maxPossible.toFixed(2)}</strong>`
-    : rem06 > 0
-      ? `<br>Oceny z wagą <strong>0.6 decydują</strong> — jedynka tam niszczy szanse. Minimum to <strong>3</strong> na każdej dużej.`
-      : '';
-
-  box.innerHTML = `
-    <div class="mission-title">🎯 Co Wojtek MUSI dostać</div>
-    <div class="mission-subtitle">\${subtitle}</div>
-    \${scenarios.length ? '<div class="scenario-grid">' + scenHTML + '</div>' : ''}
-    <div class="mission-alert">
-      <div class="al-title">⚡ Kluczowy wniosek</div>
-      Obecna średnia: <strong>\${curAvg.toFixed(2)}</strong> · \${alertNeed}\${alertWarn}
-    </div>
-    \${remaining.length > 0 ? '<div class="slider-section"><div class="slider-label">🎮 Kalkulator — ustaw planowane oceny i sprawdź czy zdasz</div>' + sliderRows + '<div class="slider-result" id="sliderResult"></div></div>' : ''}
-  `;
-
-  // Podepnij słuchacze sliderów
-  remaining.forEach((w, i) => {
-    const el = document.getElementById(`slot_\${i}`);
-    if (el) el.addEventListener('input', () => updateDynSlider(curSumGW, curSumW, remaining, grandTotalW));
-  });
-  updateDynSlider(curSumGW, curSumW, remaining, grandTotalW);
-}
-
-function calcScenarios(curSumGW, curSumW, remaining, grandTotalW) {
-  if (remaining.length === 0) return [];
-  const needed = TARGET_AVG * grandTotalW - curSumGW;
-  const remSumW = remaining.reduce((s, w) => s + w, 0);
-
-  // Generuj kilka wariantów: równy, duże wyżej, małe wyżej, minimum
-  const gradeVals = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6];
-  const gradeNames = {1:'1',1.5:'1+',2:'2',2.5:'2+',3:'3',3.5:'3+',4:'4',4.5:'4+',5:'5',5.5:'5+',6:'6'};
-
-  // Znajdź wszystkie kombinacje które zdają, posortuj po sumie
-  let valid = [];
-  const rem06 = remaining.filter(w=>w===0.6);
-  const rem04 = remaining.filter(w=>w===0.4);
-  const other = remaining.filter(w=>w!==0.6&&w!==0.4);
-
-  // Uproszczenie: szukamy jednej oceny dla 0.6 i jednej dla 0.4 (zakładamy że każde dwie takie same)
-  for (const g06 of gradeVals) {
-    for (const g04 of gradeVals) {
-      const gw = rem06.reduce((s,w)=>s+g06*w,0) + rem04.reduce((s,w)=>s+g04*w,0) + other.reduce((s,w)=>s+w*g06,0);
-      const avg = (curSumGW + gw) / grandTotalW;
-      if (avg >= TARGET_AVG) {
-        const sum = rem06.length*g06 + rem04.length*g04 + other.length*g06;
-        valid.push({g06, g04, avg, sum, margin: avg - TARGET_AVG});
-      }
-    }
-  }
-
-  valid.sort((a,b) => a.sum - b.sum || a.g06 - b.g06);
-
-  // Deduplikuj i wybierz max 4 różne scenariusze
-  const seen = new Set();
-  const unique = [];
-  for (const v of valid) {
-    const key = `\${v.g06}_\${v.g04}`;
-    if (!seen.has(key)) { seen.add(key); unique.push(v); }
-    if (unique.length >= 5) break;
-  }
-
-  return unique.map(v => ({
-    avg: v.avg,
-    margin: v.margin,
-    slots: remaining.map(w => {
-      const gVal = (w === 0.6 || other.includes(w)) ? v.g06 : v.g04;
-      return { weight: w, grade: gVal, name: gradeNames[gVal] || String(gVal) };
-    })
-  }));
-}
-
-function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
-  let futureGW = 0;
-  for (let i = 0; i < remaining.length; i++) {
-    const el = document.getElementById(`slot_\${i}`);
-    const vel = document.getElementById(`vslot_\${i}`);
-    if (!el || !vel) continue;
-    const raw = parseInt(el.value);
+function updateSlider() {
+  const ids = ['s06a','s06b','s04a','s04b'];
+  const valIds = ['v06a','v06b','v04a','v04b'];
+  const weights = [0.6, 0.6, 0.4, 0.4];
+  const grades = ids.map((id, i) => {
+    const raw = parseInt(document.getElementById(id).value);
     const g = GRADE_MAP[raw] || GRADE_MAP[1];
-    vel.textContent = g.name;
-    vel.style.color = gradeColor(g.val);
-    futureGW += g.val * remaining[i];
-  }
-  const finalAvg = (curSumGW + futureGW) / grandTotalW;
+    const el = document.getElementById(valIds[i]);
+    el.textContent = g.name;
+    el.style.color = gradeColor(g.val);
+    return g.val;
+  });
+  const futureGW = grades.reduce((s, g, i) => s + g * weights[i], 0);
+  const finalAvg = (CURRENT_SUM_GW + futureGW) / TOTAL_SUM_W;
   const ok = finalAvg >= TARGET_AVG;
   const diff = finalAvg - TARGET_AVG;
   const res = document.getElementById('sliderResult');
-  if (!res) return;
   res.innerHTML = `
     <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;">
-      <div class="res-avg \${ok?'ok':'fail'}">\${finalAvg.toFixed(2)}</div>
-      <div style="font-size:0.75rem;color:\${ok?'var(--good)':'var(--danger)'}">
-        \${ok ? '✅ ZDAJESZ! Powyżej 1.8' : '❌ ZA MAŁO. Brakuje ' + Math.abs(diff).toFixed(2) + ' pkt'}
+      <div class="res-avg ${ok ? 'ok' : 'fail'}">${finalAvg.toFixed(2)}</div>
+      <div style="font-size:0.75rem;color:${ok ? 'var(--good)' : 'var(--danger)'}">
+        ${ok ? '\u2705 ZDAJESZ! Jeste\u015b powy\u017cej 1.8' : '\u274c ZA MA\u0141O. Brakuje ' + Math.abs(diff).toFixed(2) + ' pkt'}
       </div>
     </div>
     <div style="color:var(--muted);font-size:0.68rem;">
-      Suma ważona z nowych: \${futureGW.toFixed(2)} · Łączna GW: \${(curSumGW+futureGW).toFixed(2)} / \${grandTotalW} ·
-      Margines: <span style="color:\${ok?'var(--good)':'var(--danger)'}">\${diff>=0?'+':''}\${diff.toFixed(3)}</span>
+      Suma wa\u017cona z nowych ocen: ${futureGW.toFixed(2)} &middot;
+      \u0141\u0105czna suma GW: ${(CURRENT_SUM_GW + futureGW).toFixed(2)} / ${TOTAL_SUM_W} &middot;
+      Margines: <span style="color:${ok ? 'var(--good)':'var(--danger)'}">${diff >= 0 ? '+' : ''}${diff.toFixed(3)}</span>
     </div>
   `;
 }
+
+['s06a','s06b','s04a','s04b'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateSlider);
+});
+updateSlider();
 // ────────────────────────────────────────────────────────────────────────────
 
 </script>
