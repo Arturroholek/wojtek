@@ -39,7 +39,6 @@
   }
   .subtitle { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.1em; }
 
-  /* COUNTDOWN */
   .countdown-strip {
     background: linear-gradient(90deg, var(--accent) 0%, var(--accent2) 100%);
     padding: 1rem 2rem; display: flex; align-items: center; justify-content: center;
@@ -49,7 +48,6 @@
   .countdown-days { font-family: 'Bebas Neue', sans-serif; font-size: 3rem; color: #fff; line-height: 1; }
   .countdown-deadline { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: rgba(255,255,255,0.9); font-weight: 700; }
 
-  /* CARDS */
   .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 2rem 0; }
   @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
   .card { background: var(--panel); border: 1px solid var(--border); padding: 1.5rem; position: relative; overflow: hidden; transition: transform 0.2s, border-color 0.2s; }
@@ -61,7 +59,6 @@
   .card-value.gold { color: var(--gold); }
   .card-sub { font-size: 0.8rem; color: var(--muted); font-family: 'Space Mono', monospace; }
 
-  /* PROGRESS */
   .progress-section { background: var(--panel); border: 1px solid var(--border); padding: 2rem; margin: 1.5rem 0; position: relative; }
   .progress-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2), var(--gold)); }
   .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.5rem; }
@@ -73,13 +70,11 @@
   .target-line::after { content: 'CEL 1.8'; position: absolute; top: -22px; left: 50%; transform: translateX(-50%); font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--gold); white-space: nowrap; }
   .scale-labels { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); margin-top: 0.5rem; }
 
-  /* CHART */
   .chart-section { background: var(--panel); border: 1px solid var(--border); padding: 2rem; margin: 1.5rem 0; position: relative; }
   .chart-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold), var(--green)); }
   .chart-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; letter-spacing: 0.05em; margin-bottom: 1.5rem; }
   canvas#chart { width: 100% !important; display: block; }
 
-  /* GRADES TABLE */
   .grades-section { background: var(--panel); border: 1px solid var(--border); padding: 2rem; margin: 1.5rem 0; position: relative; }
   .grades-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--green), var(--accent2)); }
   .grades-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; margin-bottom: 1.2rem; }
@@ -110,13 +105,11 @@
 
   .no-data { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); padding: 1rem 0; }
 
-  /* STATUS */
   .status-banner { padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-family: 'Space Mono', monospace; font-size: 0.85rem; line-height: 1.6; border-left: 4px solid var(--accent); }
   .status-banner.ok { border-color: var(--good); background: rgba(0,230,118,0.05); }
   .status-banner.warn { border-color: var(--gold); background: rgba(255,215,0,0.05); }
   .status-banner.bad { border-color: var(--danger); background: rgba(255,23,68,0.05); }
 
-  /* QUOTE */
   .quote-card { background: linear-gradient(135deg, rgba(255,62,62,0.08), rgba(255,140,0,0.06)); border: 1px solid rgba(255,140,0,0.2); padding: 2rem; margin: 1.5rem 0; text-align: center; }
   .quote-day { font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.2em; color: var(--accent2); margin-bottom: 1rem; text-transform: uppercase; }
   .quote-text { font-size: 1.3rem; font-weight: 600; line-height: 1.5; color: #fff; margin-bottom: 1rem; font-style: italic; }
@@ -124,11 +117,9 @@
   .quote-text::after { content: '"'; color: var(--accent); }
   .quote-author { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); }
 
-  /* ERROR */
   .error-box { background: rgba(255,23,68,0.08); border: 1px solid rgba(255,23,68,0.3); border-left: 4px solid var(--danger); padding: 1.2rem 1.5rem; margin: 1.5rem 0; font-family: 'Space Mono', monospace; font-size: 0.8rem; line-height: 1.7; display: none; }
   .error-box code { color: var(--accent2); background: rgba(255,255,255,0.05); padding: 0.1rem 0.4rem; }
 
-  /* MISSION SECTION */
   .mission-section { background: var(--panel); border: 1px solid var(--border); padding: 2rem; margin: 1.5rem 0; position: relative; }
   .mission-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #ff1744, #ff8c00, #ffd700); }
   .mission-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; margin-bottom: 0.4rem; }
@@ -256,106 +247,7 @@
     <div class="no-data" id="noData" style="display:none">Brak ocen w pliku.</div>
   </div>
 
-  <!-- ══ MISJA: MINIMALNE OCENY ══ -->
-  <div class="mission-section">
-    <div class="mission-title">🎯 Co Wojtek MUSI dostać</div>
-    <div class="mission-subtitle">Zostały: 2 oceny z wagą 0.6 + 2 oceny z wagą 0.4 · Cel: średnia ≥ 1.80</div>
-
-    <div class="scenario-grid">
-      <div class="scenario-card best">
-        <div class="sc-label">Scenariusz A — najłatwiejszy</div>
-        <div class="sc-row">
-          <div class="sc-badge grade-mid">3</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-row">
-          <div class="sc-badge grade-low">3</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-result">Wynik: średnia <strong>1.88</strong> ✅</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="sc-label">Scenariusz B — zróżnicowany</div>
-        <div class="sc-row">
-          <div class="sc-badge grade-high">4</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-row">
-          <div class="sc-badge grade-low">1</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-result">Wynik: średnia <strong>1.85</strong> ✅</div>
-      </div>
-
-      <div class="scenario-card">
-        <div class="sc-label">Scenariusz C — duże ważne</div>
-        <div class="sc-row">
-          <div class="sc-badge grade-mid">3+</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-row">
-          <div class="sc-badge grade-low">2</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-result">Wynik: średnia <strong>1.88</strong> ✅</div>
-      </div>
-
-      <div class="scenario-card hardest">
-        <div class="sc-label">Scenariusz D — ryzykowny</div>
-        <div class="sc-row">
-          <div class="sc-badge grade-mid">2+</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.6</strong> (duże)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-row">
-          <div class="sc-badge grade-mid">3</div>
-          <div class="sc-info">× 2 oceny<br><strong>waga 0.4</strong> (średnie)</div>
-        </div>
-        <div class="sc-sep"></div>
-        <div class="sc-result">Wynik: średnia <strong>1.85</strong> ✅ (margines 0.05!)</div>
-      </div>
-    </div>
-
-    <div class="mission-alert">
-      <div class="al-title">⚡ Kluczowy wniosek</div>
-      Obecna średnia: <strong>1.43</strong> · Potrzeba z przyszłych 4 ocen łącznie <strong>5.28 pkt ważonych</strong>.<br>
-      Oceny z wagą <strong>0.6 decydują</strong> — każda jedynka tam niszczy szanse. Trójka na dużej wadze to minimum.<br>
-      Jeśli dostaniesz <strong>3 i 3</strong> na 0.6 oraz <strong>3 i 3</strong> na 0.4 → jesteś bezpieczny z marginesem.
-    </div>
-
-    <div class="slider-section">
-      <div class="slider-label">🎮 Kalkulator: wpisz planowane oceny i sprawdź czy zdasz</div>
-      <div class="slider-row">
-        <label>Ocena 0.6 (duża) #1</label>
-        <input type="range" id="s06a" min="1" max="12" value="6" step="1">
-        <div class="slider-val" id="v06a">3</div>
-      </div>
-      <div class="slider-row">
-        <label>Ocena 0.6 (duża) #2</label>
-        <input type="range" id="s06b" min="1" max="12" value="6" step="1">
-        <div class="slider-val" id="v06b">3</div>
-      </div>
-      <div class="slider-row">
-        <label>Ocena 0.4 (średnia) #1</label>
-        <input type="range" id="s04a" min="1" max="12" value="6" step="1">
-        <div class="slider-val" id="v04a">3</div>
-      </div>
-      <div class="slider-row">
-        <label>Ocena 0.4 (średnia) #2</label>
-        <input type="range" id="s04b" min="1" max="12" value="6" step="1">
-        <div class="slider-val" id="v04b">3</div>
-      </div>
-      <div class="slider-result" id="sliderResult"></div>
-    </div>
-  </div>
-  <!-- ══════════════════════════════ -->
+  <div class="mission-section" id="missionSection"></div>
 
   <div class="quote-card">
     <div class="quote-day" id="quoteDay">Cytat na dziś</div>
@@ -369,13 +261,6 @@
 <script>
 let grades = [];
 
-// ── CYTATY ──────────────────────────────────────────────────────────────────
-// Cytaty są ładowane z pliku cytaty.json w tym samym folderze.
-// Format pliku:
-// [
-//   { "text": "Twój cytat tutaj.", "autor": "— Autor" },
-//   ...
-// ]
 const FALLBACK_QUOTES = [
   { text: "Średnia 1.8 nie spada z nieba. Ale można ją zbudować ocena po ocenie.", autor: "— Statystyka" },
   { text: "Nie musisz kochać matematyki. Musisz ją tylko zdać.", autor: "— Pragmatyczny Mentor" }
@@ -384,7 +269,7 @@ const FALLBACK_QUOTES = [
 async function loadQuotes() {
   try {
     const res = await fetch('cytaty.json');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (!Array.isArray(data) || data.length === 0) throw new Error('Pusta tablica');
     return data;
@@ -400,11 +285,10 @@ async function updateQuote() {
   const idx = (d.getDate() + d.getMonth() * 31) % quotes.length;
   const q = quotes[idx];
   const dayNames = ['Niedziela','Poniedziałek','Wtorek','Środa','Czwartek','Piątek','Sobota'];
-  document.getElementById('quoteDay').textContent = `Motywacja na dziś — ${dayNames[d.getDay()]}`;
+  document.getElementById('quoteDay').textContent = 'Motywacja na dziś — ' + dayNames[d.getDay()];
   document.getElementById('quoteText').textContent = q.text;
   document.getElementById('quoteAuthor').textContent = q.autor || q.author || '';
 }
-// ────────────────────────────────────────────────────────────────────────────
 
 function parseGrade(val) {
   if (typeof val === 'number') return val;
@@ -437,24 +321,30 @@ function updateCountdown() {
 async function loadGrades() {
   try {
     const res = await fetch('oceny.json');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     if (!Array.isArray(data)) throw new Error('JSON musi być tablicą');
-    
-    grades = data.map(g => ({
-      ...g,
-      ocenaWyswietlana: g.ocena,
-      ocena: parseGrade(g.ocena)
-    })).filter(g => !isNaN(g.ocena) && [0.2, 0.4, 0.6].includes(g.waga));
+
+    grades = data.map(function(g) {
+      return Object.assign({}, g, {
+        ocenaWyswietlana: g.ocena,
+        ocena: parseGrade(g.ocena)
+      });
+    }).filter(function(g) {
+      return !isNaN(g.ocena) && [0.2, 0.4, 0.6].includes(g.waga);
+    });
 
     renderTable();
     updateStats();
     drawChart();
+    var _sumGW = grades.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
+    var _sumW  = grades.reduce(function(s, g) { return s + g.waga; }, 0);
+    renderMission(grades, _sumGW, _sumW);
   } catch (err) {
     document.getElementById('errorBox').style.display = 'block';
     document.getElementById('gradesTable').style.display = 'none';
     document.getElementById('noData').style.display = 'none';
-    const b = document.getElementById('statusBanner');
+    var b = document.getElementById('statusBanner');
     b.className = 'status-banner bad';
     b.textContent = '❌ Nie można załadować oceny.json — sprawdź czy plik istnieje i ma poprawny format.';
     document.getElementById('currentAvg').textContent = '!';
@@ -465,8 +355,8 @@ async function loadGrades() {
 
 function weightedAvg(arr) {
   if (!arr.length) return 0;
-  const sumW = arr.reduce((s, g) => s + g.waga, 0);
-  const sumGW = arr.reduce((s, g) => s + g.ocena * g.waga, 0);
+  var sumW = arr.reduce(function(s, g) { return s + g.waga; }, 0);
+  var sumGW = arr.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
   return sumGW / sumW;
 }
 
@@ -483,107 +373,107 @@ function gradeClass(v) {
 }
 
 function renderTable() {
-  const err = document.getElementById('errorBox');
-  const tbl = document.getElementById('gradesTable');
-  const nd = document.getElementById('noData');
+  var err = document.getElementById('errorBox');
+  var tbl = document.getElementById('gradesTable');
+  var nd = document.getElementById('noData');
   err.style.display = 'none';
 
   if (!grades.length) { tbl.style.display = 'none'; nd.style.display = 'block'; return; }
   nd.style.display = 'none'; tbl.style.display = 'table';
 
-  const totalW = grades.reduce((s, g) => s + g.waga, 0);
-  const body = document.getElementById('gradesBody');
-  body.innerHTML = grades.map((g, i) => {
-    const wl = wagaLabel(g.waga);
-    const gc = gradeClass(g.ocena);
-    const impact = ((g.ocena * g.waga / totalW)).toFixed(3);
-    return `<tr>
-      <td style="color:var(--muted)">${i + 1}</td>
-      <td><span class="grade-val ${gc}">${g.ocenaWyswietlana}</span></td>
-      <td><span class="badge-waga ${wl.cls}">${wl.txt}</span></td>
-      <td style="color:var(--muted)">${g.data || '—'}</td>
-      <td style="color:var(--muted);font-size:0.72rem">+${impact}</td>
-    </tr>`;
+  var totalW = grades.reduce(function(s, g) { return s + g.waga; }, 0);
+  var body = document.getElementById('gradesBody');
+  body.innerHTML = grades.map(function(g, i) {
+    var wl = wagaLabel(g.waga);
+    var gc = gradeClass(g.ocena);
+    var impact = (g.ocena * g.waga / totalW).toFixed(3);
+    return '<tr>'
+      + '<td style="color:var(--muted)">' + (i + 1) + '</td>'
+      + '<td><span class="grade-val ' + gc + '">' + g.ocenaWyswietlana + '</span></td>'
+      + '<td><span class="badge-waga ' + wl.cls + '">' + wl.txt + '</span></td>'
+      + '<td style="color:var(--muted)">' + (g.data || '—') + '</td>'
+      + '<td style="color:var(--muted);font-size:0.72rem">+' + impact + '</td>'
+      + '</tr>';
   }).join('');
 }
 
 function updateStats() {
-  const target = 1.8;
+  var target = 1.8;
   if (!grades.length) {
     document.getElementById('currentAvg').textContent = '—';
     document.getElementById('currentGradeCount').textContent = 'Brak ocen w pliku';
     document.getElementById('progressPct').textContent = '— %';
     document.getElementById('progressFill').style.width = '0%';
-    const b = document.getElementById('statusBanner');
+    var b = document.getElementById('statusBanner');
     b.className = 'status-banner bad'; b.textContent = 'Brak ocen w pliku oceny.json.';
     return;
   }
-  const avg = weightedAvg(grades);
-  const ar = Math.round(avg * 100) / 100;
-  
-  const avgEl = document.getElementById('currentAvg');
+  var avg = weightedAvg(grades);
+  var ar = Math.round(avg * 100) / 100;
+
+  var avgEl = document.getElementById('currentAvg');
   avgEl.textContent = ar.toFixed(2);
   avgEl.className = 'card-value ' + (avg >= target ? 'gold' : 'danger');
 
-  const n = grades.length;
-  document.getElementById('currentGradeCount').textContent = `${n} ocen${n===1?'a':n<5?'y':''}  ·  suma wag: ${grades.reduce((s,g)=>s+g.waga,0).toFixed(1)}`;
+  var n = grades.length;
+  document.getElementById('currentGradeCount').textContent = n + ' ocen' + (n === 1 ? 'a' : n < 5 ? 'y' : '') + '  ·  suma wag: ' + grades.reduce(function(s,g){return s+g.waga;},0).toFixed(1);
 
-  const pct = Math.max(0, Math.min(100, ((avg - 1) / 5) * 100));
+  var pct = Math.max(0, Math.min(100, ((avg - 1) / 5) * 100));
   document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('progressPct').textContent = pct.toFixed(0) + '%';
 
-  const b = document.getElementById('statusBanner');
+  var b = document.getElementById('statusBanner');
   if (avg >= target) {
     b.className = 'status-banner ok';
-    b.innerHTML = `✅ JESTEŚ NA CELU! Twoja średnia ważona ${ar.toFixed(2)} przekracza wymaganą 1.8. Utrzymaj tempo!`;
+    b.innerHTML = '✅ JESTEŚ NA CELU! Twoja średnia ważona ' + ar.toFixed(2) + ' przekracza wymaganą 1.8. Utrzymaj tempo!';
   } else {
     b.className = 'status-banner warn';
-    const need = calcNeeded(avg, grades, target);
+    var need = calcNeeded(avg, grades, target);
     if (need) {
-      b.innerHTML = `⚡ Do celu brakuje <strong>${(target - avg).toFixed(2)}</strong> pkt. Potrzebujesz ok. <strong>${need.count} ocen(y) na ${need.grade}</strong> z wagą 0.6, żeby dobić do 1.8. Dasz radę Wojtek!`;
+      b.innerHTML = '⚡ Do celu brakuje <strong>' + (target - avg).toFixed(2) + '</strong> pkt. Potrzebujesz ok. <strong>' + need.count + ' ocen(y) na ' + need.grade + '</strong> z wagą 0.6, żeby dobić do 1.8. Dasz radę Wojtek!';
     } else {
-      b.innerHTML = `⚡ Obecna średnia ważona: ${ar.toFixed(2)} — cel: 1.8. Zbieraj lepsze oceny!`;
+      b.innerHTML = '⚡ Obecna średnia ważona: ' + ar.toFixed(2) + ' — cel: 1.8. Zbieraj lepsze oceny!';
     }
   }
 }
 
 function calcNeeded(currentAvg, currentGrades, target) {
-  const curSumW = currentGrades.reduce((s, g) => s + g.waga, 0);
-  const curSumGW = currentGrades.reduce((s, g) => s + g.ocena * g.waga, 0);
-  for (let grade = 6; grade >= 2; grade -= 1) {
-    for (let n = 1; n <= 15; n++) {
-      const newSumGW = curSumGW + grade * 0.6 * n;
-      const newSumW = curSumW + 0.6 * n;
-      if (newSumGW / newSumW >= target) return { count: n, grade };
+  var curSumW = currentGrades.reduce(function(s, g) { return s + g.waga; }, 0);
+  var curSumGW = currentGrades.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
+  for (var grade = 6; grade >= 2; grade -= 1) {
+    for (var n = 1; n <= 15; n++) {
+      var newSumGW = curSumGW + grade * 0.6 * n;
+      var newSumW = curSumW + 0.6 * n;
+      if (newSumGW / newSumW >= target) return { count: n, grade: grade };
     }
   }
   return null;
 }
 
 function drawChart() {
-  const canvas = document.getElementById('chart');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  const dpr = window.devicePixelRatio || 1;
-  const w = canvas.parentElement.clientWidth - 64;
-  const h = 220;
+  var canvas = document.getElementById('chart');
+  if (!canvas) return;
+  var ctx = canvas.getContext('2d');
+  var dpr = window.devicePixelRatio || 1;
+  var w = canvas.parentElement.clientWidth - 64;
+  var h = 220;
   canvas.width = w * dpr; canvas.height = h * dpr;
   canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
   ctx.scale(dpr, dpr);
   ctx.clearRect(0, 0, w, h);
 
-  const pad = { t: 20, r: 20, b: 40, l: 42 };
-  const cW = w - pad.l - pad.r, cH = h - pad.t - pad.b;
+  var pad = { t: 20, r: 20, b: 40, l: 42 };
+  var cW = w - pad.l - pad.r, cH = h - pad.t - pad.b;
 
-  for (let g = 1; g <= 6; g++) {
-    const y = pad.t + cH - ((g - 1) / 5) * cH;
+  for (var g = 1; g <= 6; g++) {
+    var y = pad.t + cH - ((g - 1) / 5) * cH;
     ctx.strokeStyle = 'rgba(255,255,255,0.05)'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + cW, y); ctx.stroke();
     ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '10px Space Mono, monospace';
     ctx.textAlign = 'right'; ctx.fillText(g, pad.l - 6, y + 4);
   }
 
-  const tY = pad.t + cH - ((1.8 - 1) / 5) * cH;
+  var tY = pad.t + cH - ((1.8 - 1) / 5) * cH;
   ctx.setLineDash([6, 4]); ctx.strokeStyle = '#ffd700'; ctx.lineWidth = 2;
   ctx.beginPath(); ctx.moveTo(pad.l, tY); ctx.lineTo(pad.l + cW, tY); ctx.stroke();
   ctx.setLineDash([]);
@@ -596,66 +486,56 @@ function drawChart() {
     return;
   }
 
-  const step = grades.length > 1 ? cW / (grades.length - 1) : cW / 2;
+  var step = grades.length > 1 ? cW / (grades.length - 1) : cW / 2;
 
-  const avgPts = grades.map((g, i) => {
-    const slice = grades.slice(0, i + 1);
-    const ra = weightedAvg(slice);
+  var avgPts = grades.map(function(g, i) {
+    var slice = grades.slice(0, i + 1);
+    var ra = weightedAvg(slice);
     return { x: pad.l + (grades.length > 1 ? i * step : cW / 2), y: pad.t + cH - ((ra - 1) / 5) * cH };
   });
 
   if (avgPts.length > 1) {
-    const grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + cH);
+    var grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + cH);
     grad.addColorStop(0, 'rgba(255,140,0,0.15)'); grad.addColorStop(1, 'rgba(255,140,0,0)');
     ctx.beginPath(); ctx.moveTo(avgPts[0].x, pad.t + cH);
-    avgPts.forEach(p => ctx.lineTo(p.x, p.y));
+    avgPts.forEach(function(p) { ctx.lineTo(p.x, p.y); });
     ctx.lineTo(avgPts[avgPts.length - 1].x, pad.t + cH);
     ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
 
     ctx.beginPath(); ctx.strokeStyle = '#ff8c00'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round';
-    avgPts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
+    avgPts.forEach(function(p, i) { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
     ctx.stroke();
   }
 
-  grades.forEach((g, i) => {
-    const x = pad.l + (grades.length > 1 ? i * step : cW / 2);
-    const y = pad.t + cH - ((g.ocena - 1) / 5) * cH;
-    const radius = g.waga === 0.6 ? 9 : g.waga === 0.4 ? 7 : 5;
-    const color = g.ocena >= 3 ? '#39ff14' : g.ocena >= 2 ? '#ff8c00' : '#ff1744';
+  grades.forEach(function(g, i) {
+    var x = pad.l + (grades.length > 1 ? i * step : cW / 2);
+    var y = pad.t + cH - ((g.ocena - 1) / 5) * cH;
+    var radius = g.waga === 0.6 ? 9 : g.waga === 0.4 ? 7 : 5;
+    var color = g.ocena >= 3 ? '#39ff14' : g.ocena >= 2 ? '#ff8c00' : '#ff1744';
     ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fillStyle = color; ctx.fill();
     ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1; ctx.stroke();
-    ctx.fillStyle = '#fff'; ctx.font = `bold ${g.waga === 0.6 ? 11 : 10}px Space Mono, monospace`;
+    ctx.fillStyle = '#fff'; ctx.font = 'bold ' + (g.waga === 0.6 ? 11 : 10) + 'px Space Mono, monospace';
     ctx.textAlign = 'center'; ctx.fillText(g.ocenaWyswietlana, x, y - radius - 4);
   });
 
   ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '9px Space Mono, monospace'; ctx.textAlign = 'center';
-  grades.forEach((g, i) => {
-    ctx.fillText(`#${i + 1}`, pad.l + (grades.length > 1 ? i * step : cW / 2), pad.t + cH + 16);
+  grades.forEach(function(g, i) {
+    ctx.fillText('#' + (i + 1), pad.l + (grades.length > 1 ? i * step : cW / 2), pad.t + cH + 16);
   });
 }
 
 window.addEventListener('resize', drawChart);
 init();
 
-// ── KALKULATOR SLIDERÓW ─────────────────────────────────────────────────────
-const CURRENT_SUM_GW = 6.6;
-const CURRENT_SUM_W  = 4.6;
-const TOTAL_SUM_W    = 6.6;
-const TARGET_AVG     = 1.8;
+// ── MISJA DYNAMICZNA ────────────────────────────────────────────────────────
+var EXPECTED_FUTURE = [0.6, 0.6, 0.4, 0.4];
+var TARGET_AVG = 1.8;
 
-const GRADE_MAP = {
-  1:  {val: 1,   name: '1'},
-  2:  {val: 1.5, name: '1+'},
-  3:  {val: 2,   name: '2'},
-  4:  {val: 2.5, name: '2+'},
-  5:  {val: 3,   name: '3'},
-  6:  {val: 3.5, name: '3+'},
-  7:  {val: 4,   name: '4'},
-  8:  {val: 4.5, name: '4+'},
-  9:  {val: 5,   name: '5'},
-  10: {val: 5.5, name: '5+'},
-  11: {val: 6,   name: '6'},
+var GRADE_MAP = {
+  1:{val:1,name:'1'}, 2:{val:1.5,name:'1+'}, 3:{val:2,name:'2'}, 4:{val:2.5,name:'2+'},
+  5:{val:3,name:'3'}, 6:{val:3.5,name:'3+'}, 7:{val:4,name:'4'}, 8:{val:4.5,name:'4+'},
+  9:{val:5,name:'5'}, 10:{val:5.5,name:'5+'}, 11:{val:6,name:'6'}
 };
 
 function gradeColor(v) {
@@ -665,44 +545,224 @@ function gradeColor(v) {
   return 'var(--danger)';
 }
 
-function updateSlider() {
-  const ids = ['s06a','s06b','s04a','s04b'];
-  const valIds = ['v06a','v06b','v04a','v04b'];
-  const weights = [0.6, 0.6, 0.4, 0.4];
-  const grades = ids.map((id, i) => {
-    const raw = parseInt(document.getElementById(id).value);
-    const g = GRADE_MAP[raw] || GRADE_MAP[1];
-    const el = document.getElementById(valIds[i]);
-    el.textContent = g.name;
-    el.style.color = gradeColor(g.val);
-    return g.val;
-  });
-  const futureGW = grades.reduce((s, g, i) => s + g * weights[i], 0);
-  const finalAvg = (CURRENT_SUM_GW + futureGW) / TOTAL_SUM_W;
-  const ok = finalAvg >= TARGET_AVG;
-  const diff = finalAvg - TARGET_AVG;
-  const res = document.getElementById('sliderResult');
-  res.innerHTML = `
-    <div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;">
-      <div class="res-avg ${ok ? 'ok' : 'fail'}">${finalAvg.toFixed(2)}</div>
-      <div style="font-size:0.75rem;color:${ok ? 'var(--good)' : 'var(--danger)'}">
-        ${ok ? '\u2705 ZDAJESZ! Jeste\u015b powy\u017cej 1.8' : '\u274c ZA MA\u0141O. Brakuje ' + Math.abs(diff).toFixed(2) + ' pkt'}
-      </div>
-    </div>
-    <div style="color:var(--muted);font-size:0.68rem;">
-      Suma wa\u017cona z nowych ocen: ${futureGW.toFixed(2)} &middot;
-      \u0141\u0105czna suma GW: ${(CURRENT_SUM_GW + futureGW).toFixed(2)} / ${TOTAL_SUM_W} &middot;
-      Margines: <span style="color:${ok ? 'var(--good)':'var(--danger)'}">${diff >= 0 ? '+' : ''}${diff.toFixed(3)}</span>
-    </div>
-  `;
+function gradeBadgeClass(v) {
+  if (v >= 4) return 'grade-high';
+  if (v >= 3) return 'grade-mid';
+  return 'grade-low';
 }
 
-['s06a','s06b','s04a','s04b'].forEach(id => {
-  document.getElementById(id).addEventListener('input', updateSlider);
-});
-updateSlider();
-// ────────────────────────────────────────────────────────────────────────────
+function calcFutureSlots(loadedGrades) {
+  var BASE_COUNT = 10;
+  var newGrades = loadedGrades.slice(BASE_COUNT);
+  var remaining = EXPECTED_FUTURE.slice();
+  for (var i = 0; i < newGrades.length; i++) {
+    var idx = remaining.indexOf(newGrades[i].waga);
+    if (idx !== -1) remaining.splice(idx, 1);
+  }
+  return { remaining: remaining, newGrades: newGrades };
+}
 
+function renderMission(loadedGrades, curSumGW, curSumW) {
+  var slots = calcFutureSlots(loadedGrades);
+  var remaining = slots.remaining;
+
+  var remSumW = remaining.reduce(function(s, w) { return s + w; }, 0);
+  var grandTotalW = curSumW + remSumW;
+  var needed = TARGET_AVG * grandTotalW - curSumGW;
+  var neededAvg = remSumW > 0 ? needed / remSumW : 0;
+  var maxPossible = remSumW > 0 ? (curSumGW + remSumW * 6) / grandTotalW : curSumGW / curSumW;
+  var curAvg = curSumW > 0 ? curSumGW / curSumW : 0;
+
+  var box = document.getElementById('missionSection');
+  if (!box) return;
+
+  var rem06 = remaining.filter(function(w) { return w === 0.6; }).length;
+  var rem04 = remaining.filter(function(w) { return w === 0.4; }).length;
+
+  if (curAvg >= TARGET_AVG && remaining.length === 0) {
+    box.innerHTML = '<div class="mission-title">🏆 MISJA ZAKOŃCZONA!</div>'
+      + '<div style="background:rgba(0,230,118,0.08);border:1px solid rgba(0,230,118,0.3);padding:1.5rem;margin-top:1rem;font-family:\'Space Mono\',monospace;font-size:0.9rem;line-height:1.8;">'
+      + '✅ Wojtek zdał! Średnia ważona <strong>' + curAvg.toFixed(2) + '</strong> przekracza wymagane 1.8.<br>'
+      + 'Wszystkie oczekiwane oceny zostały zdobyte. GRATULACJE! 🎉'
+      + '</div>';
+    return;
+  }
+
+  if (remaining.length === 0 && curAvg < TARGET_AVG) {
+    box.innerHTML = '<div class="mission-title">⚠️ Brak więcej slotów</div>'
+      + '<div class="mission-alert" style="margin-top:1rem;">'
+      + '<div class="al-title">Sytuacja krytyczna</div>'
+      + 'Wszystkie oczekiwane oceny zostały dodane, ale średnia <strong>' + curAvg.toFixed(2) + '</strong> jest poniżej 1.8.<br>'
+      + 'Porozmawiaj z nauczycielem o dodatkowych ocenach.'
+      + '</div>';
+    return;
+  }
+
+  var scenarios = calcScenarios(curSumGW, curSumW, remaining, grandTotalW);
+
+  // Buduj subtitle
+  var subtitleParts = [];
+  if (rem06 > 0) subtitleParts.push(rem06 + ' ocen' + (rem06 === 1 ? 'a' : 'y') + ' z wagą 0.6');
+  if (rem04 > 0) subtitleParts.push(rem04 + ' ocen' + (rem04 === 1 ? 'a' : 'y') + ' z wagą 0.4');
+  var subtitle = subtitleParts.length
+    ? 'Zostało: ' + subtitleParts.join(' + ') + ' · Cel: średnia ≥ 1.80'
+    : 'Cel: średnia ≥ 1.80';
+
+  // Buduj karty scenariuszy
+  var scenHTML = scenarios.map(function(sc, i) {
+    var isFirst = i === 0;
+    var isLast = i === scenarios.length - 1 && scenarios.length > 1;
+    var cls = isFirst ? 'scenario-card best' : isLast ? 'scenario-card hardest' : 'scenario-card';
+    var labelTxt = isFirst ? 'Najłatwiejszy ✓' : isLast ? 'Ryzykowny ⚠' : 'Scenariusz ' + String.fromCharCode(65 + i);
+    var rows = sc.slots.map(function(slot) {
+      var gc = gradeBadgeClass(slot.grade);
+      return '<div class="sc-row">'
+        + '<div class="sc-badge ' + gc + '">' + slot.name + '</div>'
+        + '<div class="sc-info">waga <strong>' + slot.weight + '</strong></div>'
+        + '</div>';
+    }).join('<div class="sc-sep"></div>');
+    var avgOk = sc.avg >= TARGET_AVG;
+    var marginNote = (sc.margin < 0.06 && avgOk) ? ' (margines ' + sc.margin.toFixed(2) + '!)' : '';
+    return '<div class="' + cls + '">'
+      + '<div class="sc-label">' + labelTxt + '</div>'
+      + rows
+      + '<div class="sc-sep"></div>'
+      + '<div class="sc-result">Wynik: <strong>' + sc.avg.toFixed(2) + '</strong> ' + (avgOk ? '✅' : '❌') + marginNote + '</div>'
+      + '</div>';
+  }).join('');
+
+  // Buduj slidery
+  var sliderRows = remaining.map(function(w, i) {
+    var wLabel = w === 0.6 ? 'duża (0.6)' : w === 0.4 ? 'średnia (0.4)' : 'waga ' + w;
+    return '<div class="slider-row">'
+      + '<label>Ocena ' + wLabel + ' #' + (i + 1) + '</label>'
+      + '<input type="range" id="slot_' + i + '" data-weight="' + w + '" min="1" max="11" value="5" step="1">'
+      + '<div class="slider-val" id="vslot_' + i + '">3</div>'
+      + '</div>';
+  }).join('');
+
+  // Buduj alert
+  var alertNeed = remSumW > 0
+    ? 'Potrzeba z pozostałych <strong>' + remaining.length + '</strong> ocen łącznie <strong>' + needed.toFixed(2) + ' pkt ważonych</strong> (śr. ' + neededAvg.toFixed(2) + '/ocenę).'
+    : '';
+  var alertWarn = maxPossible < TARGET_AVG
+    ? '<br><strong style="color:var(--danger)">⚠ Nawet same szóstki nie wystarczą! Max możliwa: ' + maxPossible.toFixed(2) + '</strong>'
+    : rem06 > 0
+      ? '<br>Oceny z wagą <strong>0.6 decydują</strong> — jedynka tam niszczy szanse. Minimum to <strong>3</strong> na każdej dużej.'
+      : '';
+
+  var sliderSection = remaining.length > 0
+    ? '<div class="slider-section">'
+      + '<div class="slider-label">🎮 Kalkulator — ustaw planowane oceny i sprawdź czy zdasz</div>'
+      + sliderRows
+      + '<div class="slider-result" id="sliderResult"></div>'
+      + '</div>'
+    : '';
+
+  box.innerHTML = '<div class="mission-title">🎯 Co Wojtek MUSI dostać</div>'
+    + '<div class="mission-subtitle">' + subtitle + '</div>'
+    + (scenarios.length ? '<div class="scenario-grid">' + scenHTML + '</div>' : '')
+    + '<div class="mission-alert">'
+    + '<div class="al-title">⚡ Kluczowy wniosek</div>'
+    + 'Obecna średnia: <strong>' + curAvg.toFixed(2) + '</strong> · ' + alertNeed + alertWarn
+    + '</div>'
+    + sliderSection;
+
+  // Podepnij słuchacze sliderów
+  remaining.forEach(function(w, i) {
+    var el = document.getElementById('slot_' + i);
+    if (el) el.addEventListener('input', function() {
+      updateDynSlider(curSumGW, curSumW, remaining, grandTotalW);
+    });
+  });
+  updateDynSlider(curSumGW, curSumW, remaining, grandTotalW);
+}
+
+function calcScenarios(curSumGW, curSumW, remaining, grandTotalW) {
+  if (remaining.length === 0) return [];
+  var gradeVals = [1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6];
+  var gradeNames = {1:'1',1.5:'1+',2:'2',2.5:'2+',3:'3',3.5:'3+',4:'4',4.5:'4+',5:'5',5.5:'5+',6:'6'};
+
+  var valid = [];
+  var rem06 = remaining.filter(function(w) { return w === 0.6; });
+  var rem04 = remaining.filter(function(w) { return w === 0.4; });
+  var other = remaining.filter(function(w) { return w !== 0.6 && w !== 0.4; });
+
+  for (var gi = 0; gi < gradeVals.length; gi++) {
+    var g06 = gradeVals[gi];
+    for (var gj = 0; gj < gradeVals.length; gj++) {
+      var g04 = gradeVals[gj];
+      var gw = rem06.reduce(function(s,w){return s+g06*w;},0)
+             + rem04.reduce(function(s,w){return s+g04*w;},0)
+             + other.reduce(function(s,w){return s+w*g06;},0);
+      var avg = (curSumGW + gw) / grandTotalW;
+      if (avg >= TARGET_AVG) {
+        var sum = rem06.length * g06 + rem04.length * g04 + other.length * g06;
+        valid.push({g06: g06, g04: g04, avg: avg, sum: sum, margin: avg - TARGET_AVG});
+      }
+    }
+  }
+
+  valid.sort(function(a, b) { return a.sum - b.sum || a.g06 - b.g06; });
+
+  var seen = {};
+  var unique = [];
+  for (var k = 0; k < valid.length; k++) {
+    var v = valid[k];
+    var key = v.g06 + '_' + v.g04;
+    if (!seen[key]) {
+      seen[key] = true;
+      unique.push(v);
+    }
+    if (unique.length >= 5) break;
+  }
+
+  return unique.map(function(v) {
+    return {
+      avg: v.avg,
+      margin: v.margin,
+      slots: remaining.map(function(w) {
+        var gVal = (w === 0.6 || other.indexOf(w) !== -1) ? v.g06 : v.g04;
+        return { weight: w, grade: gVal, name: gradeNames[gVal] || String(gVal) };
+      })
+    };
+  });
+}
+
+function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
+  var futureGW = 0;
+  for (var i = 0; i < remaining.length; i++) {
+    var el = document.getElementById('slot_' + i);
+    var vel = document.getElementById('vslot_' + i);
+    if (!el || !vel) continue;
+    var raw = parseInt(el.value);
+    var g = GRADE_MAP[raw] || GRADE_MAP[1];
+    vel.textContent = g.name;
+    vel.style.color = gradeColor(g.val);
+    futureGW += g.val * remaining[i];
+  }
+  var finalAvg = (curSumGW + futureGW) / grandTotalW;
+  var ok = finalAvg >= TARGET_AVG;
+  var diff = finalAvg - TARGET_AVG;
+  var res = document.getElementById('sliderResult');
+  if (!res) return;
+
+  var diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(3);
+  var statusMsg = ok
+    ? '✅ ZDAJESZ! Powyżej 1.8'
+    : '❌ ZA MAŁO. Brakuje ' + Math.abs(diff).toFixed(2) + ' pkt';
+
+  res.innerHTML = '<div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;">'
+    + '<div class="res-avg ' + (ok ? 'ok' : 'fail') + '">' + finalAvg.toFixed(2) + '</div>'
+    + '<div style="font-size:0.75rem;color:' + (ok ? 'var(--good)' : 'var(--danger)') + '">' + statusMsg + '</div>'
+    + '</div>'
+    + '<div style="color:var(--muted);font-size:0.68rem;">'
+    + 'Suma ważona z nowych: ' + futureGW.toFixed(2)
+    + ' · Łączna GW: ' + (curSumGW + futureGW).toFixed(2) + ' / ' + grandTotalW
+    + ' · Margines: <span style="color:' + (ok ? 'var(--good)' : 'var(--danger)') + '">' + diffStr + '</span>'
+    + '</div>';
+}
+// ────────────────────────────────────────────────────────────────────────────
 </script>
 </body>
 </html>
