@@ -513,20 +513,50 @@ var GRADE_OPTIONS = [
 ];
 
 function onGradeOverride(idx, newVal) {
-  var opt = GRADE_OPTIONS.find(function(o) { return o.val === parseFloat(newVal); });
+  var parsed = parseFloat(newVal);
+  if (isNaN(parsed)) return;
+  var opt = null;
+  for (var k = 0; k < GRADE_OPTIONS.length; k++) {
+    if (Math.abs(GRADE_OPTIONS[k].val - parsed) < 0.001) { opt = GRADE_OPTIONS[k]; break; }
+  }
   if (!opt) return;
-  if (opt.val === grades[idx].ocena) {
+  if (!grades[idx]) return;
+
+  var origVal = grades[idx].ocena;
+  if (Math.abs(opt.val - origVal) < 0.001) {
     delete gradeOverrides[idx];
   } else {
-    gradeOverrides[idx] = opt;
+    gradeOverrides[idx] = { ocena: opt.val, name: opt.name };
   }
-  renderTable();
+
+  // Aktualizuj tylko styl selecta i reset button bez rerenderowania całej tabeli
+  var sel = document.getElementById('gsel_' + idx);
+  var rst = document.getElementById('grst_' + idx);
+  if (sel) {
+    var isNowModified = gradeOverrides[idx] !== undefined;
+    var gc = opt.val >= 3 ? 'high' : opt.val >= 2 ? 'mid' : 'low';
+    sel.className = 'grade-edit-select ' + gc + (isNowModified ? ' modified' : '');
+    if (rst) rst.style.display = isNowModified ? 'inline' : 'none';
+  }
+
+  var hasOverrides = Object.keys(gradeOverrides).length > 0;
+  var banner = document.getElementById('modifiedBanner');
+  if (banner) banner.style.display = hasOverrides ? 'block' : 'none';
+
+  // Przelicz wpływ w tej samej linii
+  var eff = effectiveGrades();
+  var totalW = eff.reduce(function(s, g) { return s + g.waga; }, 0);
+  var impactEl = document.getElementById('gimp_' + idx);
+  if (impactEl && totalW > 0) {
+    impactEl.textContent = '+' + (eff[idx].ocena * eff[idx].waga / totalW).toFixed(3);
+  }
+
   updateStats();
   drawChart();
-  renderPredicted();
-  var sumGW = effectiveGrades().reduce(function(s,g){return s+g.ocena*g.waga;},0);
-  var sumW  = effectiveGrades().reduce(function(s,g){return s+g.waga;},0);
-  renderMission(effectiveGrades(), sumGW, sumW);
+  if (predictedGrades.length > 0) renderPredicted();
+  var sumGW = eff.reduce(function(s,g){return s+g.ocena*g.waga;},0);
+  var sumW  = eff.reduce(function(s,g){return s+g.waga;},0);
+  renderMission(eff, sumGW, sumW);
 }
 
 function resetAllOverrides() {
