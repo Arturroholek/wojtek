@@ -478,9 +478,10 @@ async function loadGrades() {
 }
 
 function weightedAvg(arr) {
-  if (!arr.length) return 0;
-  var sumW = arr.reduce(function(s, g) { return s + g.waga; }, 0);
-  var sumGW = arr.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
+  if (!arr || !arr.length) return null;
+  var sumW = arr.reduce(function(s, g) { return s + (g.waga || 0); }, 0);
+  if (sumW === 0) return null;
+  var sumGW = arr.reduce(function(s, g) { return s + (g.ocena || 0) * (g.waga || 0); }, 0);
   return sumGW / sumW;
 }
 
@@ -592,6 +593,11 @@ function updateStats() {
     return;
   }
   var avg = weightedAvg(eff);
+  if (avg === null || isNaN(avg)) {
+    document.getElementById('currentAvg').textContent = '—';
+    document.getElementById('currentGradeCount').textContent = 'Błąd obliczania średniej';
+    return;
+  }
   var ar = Math.round(avg * 100) / 100;
   var avgEl = document.getElementById('currentAvg');
   avgEl.textContent = ar.toFixed(2);
@@ -751,8 +757,12 @@ function renderPredicted() {
   var totalSumGW = baseSumGW + predSumGW;
   var totalSumW  = baseSumW  + predSumW;
 
-  var newAvg = totalSumW > 0 ? totalSumGW / totalSumW : 0;
+  var newAvg = totalSumW > 0 ? totalSumGW / totalSumW : null;
   var baseAvg = baseSumW > 0 ? baseSumGW / baseSumW : null;
+  if (newAvg === null || isNaN(newAvg)) {
+    resultEl.innerHTML = '<div class="predict-empty">Brak ocen bazowych — nie można obliczyć średniej.</div>';
+    return;
+  }
   var ok = newAvg >= TARGET;
   var diff = newAvg - TARGET;
   var diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(3);
@@ -823,9 +833,10 @@ function renderMission(loadedGrades, curSumGW, curSumW) {
   var needed = TARGET_AVG * grandTotalW - curSumGW;
   var neededAvg = remSumW > 0 ? needed / remSumW : 0;
   var maxPossible = remSumW > 0 ? (curSumGW + remSumW * 6) / grandTotalW : curSumGW / curSumW;
-  var curAvg = curSumW > 0 ? curSumGW / curSumW : 0;
+  var curAvg = curSumW > 0 ? curSumGW / curSumW : null;
   var box = document.getElementById('missionSection');
   if (!box) return;
+  if (curAvg === null) { box.innerHTML = ''; return; }
   var rem06 = remaining.filter(function(w) { return w === 0.6; }).length;
   var rem04 = remaining.filter(function(w) { return w === 0.4; }).length;
 
@@ -975,7 +986,8 @@ function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
     vel.style.color = gradeColor(g.val);
     futureGW += g.val * remaining[i];
   }
-  var finalAvg = (curSumGW + futureGW) / grandTotalW;
+  var finalAvg = grandTotalW > 0 ? (curSumGW + futureGW) / grandTotalW : null;
+  if (finalAvg === null || isNaN(finalAvg)) { if (res) res.innerHTML = ''; return; }
   var ok = finalAvg >= TARGET_AVG;
   var diff = finalAvg - TARGET_AVG;
   var diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(3);
