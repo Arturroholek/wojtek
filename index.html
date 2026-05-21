@@ -223,6 +223,35 @@
   .predict-result .pr-meta strong { color: var(--text); }
   .predict-empty { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--muted); padding: 0.5rem 0; }
 
+  .grade-edit-select {
+    font-family: 'Space Mono', monospace; font-size: 0.78rem; font-weight: 700;
+    background: rgba(255,255,255,0.06); border: 1px solid var(--border);
+    color: var(--text); padding: 0.2rem 0.4rem; cursor: pointer;
+    transition: border-color 0.15s; appearance: auto;
+  }
+  .grade-edit-select:focus { outline: 1px solid var(--accent2); border-color: var(--accent2); }
+  .grade-edit-select.low  { color: var(--danger); }
+  .grade-edit-select.mid  { color: var(--accent2); }
+  .grade-edit-select.high { color: var(--good); }
+  .grade-edit-select.modified { border-color: rgba(126,184,255,0.5); background: rgba(126,184,255,0.07); }
+  .reset-btn {
+    background: none; border: none; color: var(--muted); cursor: pointer;
+    font-family: 'Space Mono', monospace; font-size: 0.6rem; padding: 0 0.3rem;
+    transition: color 0.15s; vertical-align: middle;
+  }
+  .reset-btn:hover { color: var(--accent); }
+  .grades-modified-banner {
+    display: none; background: rgba(126,184,255,0.08); border: 1px solid rgba(126,184,255,0.25);
+    border-left: 4px solid #7eb8ff; padding: 0.75rem 1rem; margin-top: 1rem;
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; line-height: 1.7; color: var(--text);
+  }
+  .btn-reset-all {
+    font-family: 'Space Mono', monospace; font-size: 0.7rem;
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    padding: 0.3rem 0.8rem; cursor: pointer; margin-top: 0.5rem; transition: border-color 0.15s, color 0.15s;
+  }
+  .btn-reset-all:hover { border-color: var(--danger); color: var(--danger); }
+
   @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .card, .progress-section, .chart-section, .grades-section, .quote-card, .status-banner, .mission-section, .predict-section { animation: fadeUp 0.5s ease both; }
 
@@ -299,6 +328,10 @@
       <tbody id="gradesBody"></tbody>
     </table>
     <div class="no-data" id="noData" style="display:none">Brak ocen w pliku.</div>
+    <div class="grades-modified-banner" id="modifiedBanner">
+      ✏️ Lokalnie zmodyfikowałeś oceny — wyniki poniżej odzwierciedlają Twoje zmiany.<br>
+      <button class="btn-reset-all" onclick="resetAllOverrides()">↺ Przywróć wszystkie oryginalne</button>
+    </div>
   </div>
 
   <!-- ══ KALKULATOR PRZEWIDYWANYCH OCEN ══ -->
@@ -349,6 +382,7 @@
 
 <script>
 var grades = [];
+var gradeOverrides = {};
 var predictedGrades = [];
 var predNextId = 0;
 
@@ -426,9 +460,10 @@ async function loadGrades() {
     renderTable();
     updateStats();
     drawChart();
-    var _sumGW = grades.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
-    var _sumW  = grades.reduce(function(s, g) { return s + g.waga; }, 0);
-    renderMission(grades, _sumGW, _sumW);
+    var _eff = effectiveGrades();
+    var _sumGW = _eff.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
+    var _sumW  = _eff.reduce(function(s, g) { return s + g.waga; }, 0);
+    renderMission(_eff, _sumGW, _sumW);
   } catch (err) {
     document.getElementById('errorBox').style.display = 'block';
     document.getElementById('gradesTable').style.display = 'none';
@@ -461,22 +496,82 @@ function gradeClass(v) {
   return 'low';
 }
 
+function effectiveGrades() {
+  return grades.map(function(g, i) {
+    if (gradeOverrides[i] !== undefined) {
+      return Object.assign({}, g, { ocena: gradeOverrides[i].ocena, ocenaWyswietlana: gradeOverrides[i].name });
+    }
+    return g;
+  });
+}
+
+var GRADE_OPTIONS = [
+  {val:1,name:'1'},{val:1.5,name:'1+'},{val:2,name:'2'},{val:2.5,name:'2+'},
+  {val:3,name:'3'},{val:3.5,name:'3+'},{val:4,name:'4'},{val:4.5,name:'4+'},
+  {val:5,name:'5'},{val:5.5,name:'5+'},{val:6,name:'6'}
+];
+
+function onGradeOverride(idx, newVal) {
+  var opt = GRADE_OPTIONS.find(function(o) { return o.val === parseFloat(newVal); });
+  if (!opt) return;
+  if (opt.val === grades[idx].ocena) {
+    delete gradeOverrides[idx];
+  } else {
+    gradeOverrides[idx] = opt;
+  }
+  renderTable();
+  updateStats();
+  drawChart();
+  renderPredicted();
+  var sumGW = effectiveGrades().reduce(function(s,g){return s+g.ocena*g.waga;},0);
+  var sumW  = effectiveGrades().reduce(function(s,g){return s+g.waga;},0);
+  renderMission(effectiveGrades(), sumGW, sumW);
+}
+
+function resetAllOverrides() {
+  gradeOverrides = {};
+  renderTable();
+  updateStats();
+  drawChart();
+  renderPredicted();
+  var sumGW = effectiveGrades().reduce(function(s,g){return s+g.ocena*g.waga;},0);
+  var sumW  = effectiveGrades().reduce(function(s,g){return s+g.waga;},0);
+  renderMission(effectiveGrades(), sumGW, sumW);
+}
+
 function renderTable() {
   var err = document.getElementById('errorBox');
   var tbl = document.getElementById('gradesTable');
   var nd = document.getElementById('noData');
+  var banner = document.getElementById('modifiedBanner');
   err.style.display = 'none';
-  if (!grades.length) { tbl.style.display = 'none'; nd.style.display = 'block'; return; }
+  if (!grades.length) { tbl.style.display = 'none'; nd.style.display = 'block'; banner.style.display = 'none'; return; }
   nd.style.display = 'none'; tbl.style.display = 'table';
-  var totalW = grades.reduce(function(s, g) { return s + g.waga; }, 0);
+
+  var hasOverrides = Object.keys(gradeOverrides).length > 0;
+  banner.style.display = hasOverrides ? 'block' : 'none';
+
+  var eff = effectiveGrades();
+  var totalW = eff.reduce(function(s, g) { return s + g.waga; }, 0);
   var body = document.getElementById('gradesBody');
-  body.innerHTML = grades.map(function(g, i) {
+  body.innerHTML = eff.map(function(g, i) {
     var wl = wagaLabel(g.waga);
     var gc = gradeClass(g.ocena);
     var impact = (g.ocena * g.waga / totalW).toFixed(3);
+    var isModified = gradeOverrides[i] !== undefined;
+    var opts = GRADE_OPTIONS.map(function(o) {
+      return '<option value="' + o.val + '"' + (o.val === g.ocena ? ' selected' : '') + '>' + o.name + '</option>';
+    }).join('');
+    var sel = '<select class="grade-edit-select ' + gc + (isModified ? ' modified' : '') + '" '
+      + 'onchange="onGradeOverride(' + i + ', this.value)" '
+      + 'title="Kliknij żeby zmienić ocenę lokalnie">'
+      + opts + '</select>';
+    var resetBtn = isModified
+      ? ' <button class="reset-btn" onclick="onGradeOverride(' + i + ', ' + grades[i].ocena + ')" title="Przywróć oryginał">↺</button>'
+      : '';
     return '<tr>'
       + '<td style="color:var(--muted)">' + (i + 1) + '</td>'
-      + '<td><span class="grade-val ' + gc + '">' + g.ocenaWyswietlana + '</span></td>'
+      + '<td>' + sel + resetBtn + '</td>'
       + '<td><span class="badge-waga ' + wl.cls + '">' + wl.txt + '</span></td>'
       + '<td style="color:var(--muted)">' + (g.data || '—') + '</td>'
       + '<td style="color:var(--muted);font-size:0.72rem">+' + impact + '</td>'
@@ -486,7 +581,8 @@ function renderTable() {
 
 function updateStats() {
   var target = 1.8;
-  if (!grades.length) {
+  var eff = effectiveGrades();
+  if (!eff.length) {
     document.getElementById('currentAvg').textContent = '—';
     document.getElementById('currentGradeCount').textContent = 'Brak ocen w pliku';
     document.getElementById('progressPct').textContent = '— %';
@@ -495,13 +591,14 @@ function updateStats() {
     b.className = 'status-banner bad'; b.textContent = 'Brak ocen w pliku oceny.json.';
     return;
   }
-  var avg = weightedAvg(grades);
+  var avg = weightedAvg(eff);
   var ar = Math.round(avg * 100) / 100;
   var avgEl = document.getElementById('currentAvg');
   avgEl.textContent = ar.toFixed(2);
   avgEl.className = 'card-value ' + (avg >= target ? 'gold' : 'danger');
-  var n = grades.length;
-  document.getElementById('currentGradeCount').textContent = n + ' ocen' + (n === 1 ? 'a' : n < 5 ? 'y' : '') + '  ·  suma wag: ' + grades.reduce(function(s,g){return s+g.waga;},0).toFixed(1);
+  var n = eff.length;
+  var hasOv = Object.keys(gradeOverrides).length > 0;
+  document.getElementById('currentGradeCount').textContent = n + ' ocen' + (n === 1 ? 'a' : n < 5 ? 'y' : '') + '  ·  suma wag: ' + eff.reduce(function(s,g){return s+g.waga;},0).toFixed(1) + (hasOv ? '  ·  ✏️ lokalnie zmienione' : '');
   var pct = Math.max(0, Math.min(100, ((avg - 1) / 5) * 100));
   document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('progressPct').textContent = pct.toFixed(0) + '%';
@@ -511,7 +608,7 @@ function updateStats() {
     b.innerHTML = '✅ JESTEŚ NA CELU! Twoja średnia ważona ' + ar.toFixed(2) + ' przekracza wymaganą 1.8. Utrzymaj tempo!';
   } else {
     b.className = 'status-banner warn';
-    var need = calcNeeded(avg, grades, target);
+    var need = calcNeeded(avg, eff, target);
     if (need) {
       b.innerHTML = '⚡ Do celu brakuje <strong>' + (target - avg).toFixed(2) + '</strong> pkt. Potrzebujesz ok. <strong>' + need.count + ' ocen(y) na ' + need.grade + '</strong> z wagą 0.6, żeby dobić do 1.8. Dasz radę Wojtek!';
     } else {
@@ -559,16 +656,17 @@ function drawChart() {
   ctx.setLineDash([]);
   ctx.fillStyle = '#ffd700'; ctx.font = 'bold 10px Space Mono, monospace';
   ctx.textAlign = 'left'; ctx.fillText('CEL 1.8', pad.l + 4, tY - 5);
-  if (!grades.length) {
+  var eff = effectiveGrades();
+  if (!eff.length) {
     ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = '14px DM Sans, sans-serif';
     ctx.textAlign = 'center'; ctx.fillText('Brak danych', pad.l + cW / 2, pad.t + cH / 2);
     return;
   }
-  var step = grades.length > 1 ? cW / (grades.length - 1) : cW / 2;
-  var avgPts = grades.map(function(g, i) {
-    var slice = grades.slice(0, i + 1);
+  var step = eff.length > 1 ? cW / (eff.length - 1) : cW / 2;
+  var avgPts = eff.map(function(g, i) {
+    var slice = eff.slice(0, i + 1);
     var ra = weightedAvg(slice);
-    return { x: pad.l + (grades.length > 1 ? i * step : cW / 2), y: pad.t + cH - ((ra - 1) / 5) * cH };
+    return { x: pad.l + (eff.length > 1 ? i * step : cW / 2), y: pad.t + cH - ((ra - 1) / 5) * cH };
   });
   if (avgPts.length > 1) {
     var grad = ctx.createLinearGradient(0, pad.t, 0, pad.t + cH);
@@ -581,20 +679,22 @@ function drawChart() {
     avgPts.forEach(function(p, i) { if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
     ctx.stroke();
   }
-  grades.forEach(function(g, i) {
-    var x = pad.l + (grades.length > 1 ? i * step : cW / 2);
+  eff.forEach(function(g, i) {
+    var isModified = gradeOverrides[i] !== undefined;
+    var x = pad.l + (eff.length > 1 ? i * step : cW / 2);
     var y = pad.t + cH - ((g.ocena - 1) / 5) * cH;
     var radius = g.waga === 0.6 ? 9 : g.waga === 0.4 ? 7 : 5;
     var color = g.ocena >= 3 ? '#39ff14' : g.ocena >= 2 ? '#ff8c00' : '#ff1744';
     ctx.beginPath(); ctx.arc(x, y, radius, 0, Math.PI * 2);
     ctx.fillStyle = color; ctx.fill();
-    ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1; ctx.stroke();
+    if (isModified) { ctx.strokeStyle = '#7eb8ff'; ctx.lineWidth = 2.5; ctx.stroke(); }
+    else { ctx.strokeStyle = 'rgba(0,0,0,0.5)'; ctx.lineWidth = 1; ctx.stroke(); }
     ctx.fillStyle = '#fff'; ctx.font = 'bold ' + (g.waga === 0.6 ? 11 : 10) + 'px Space Mono, monospace';
     ctx.textAlign = 'center'; ctx.fillText(g.ocenaWyswietlana, x, y - radius - 4);
   });
   ctx.fillStyle = 'rgba(255,255,255,0.3)'; ctx.font = '9px Space Mono, monospace'; ctx.textAlign = 'center';
-  grades.forEach(function(g, i) {
-    ctx.fillText('#' + (i + 1), pad.l + (grades.length > 1 ? i * step : cW / 2), pad.t + cH + 16);
+  eff.forEach(function(g, i) {
+    ctx.fillText('#' + (i + 1), pad.l + (eff.length > 1 ? i * step : cW / 2), pad.t + cH + 16);
   });
 }
 
@@ -643,9 +743,9 @@ function renderPredicted() {
   }).join('');
 
   // Oblicz wynik
-  var allGrades = grades.concat(predictedGrades);
-  var baseSumGW = grades.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
-  var baseSumW  = grades.reduce(function(s, g) { return s + g.waga; }, 0);
+  var eff = effectiveGrades();
+  var baseSumGW = eff.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
+  var baseSumW  = eff.reduce(function(s, g) { return s + g.waga; }, 0);
   var predSumGW = predictedGrades.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
   var predSumW  = predictedGrades.reduce(function(s, g) { return s + g.waga; }, 0);
   var totalSumGW = baseSumGW + predSumGW;
