@@ -166,7 +166,6 @@
   .slider-result .res-avg.ok { color: var(--good); }
   .slider-result .res-avg.fail { color: var(--danger); }
 
-  /* ── NOWA SEKCJA: kalkulator przewidywanych ocen ── */
   .predict-section { background: var(--panel); border: 1px solid var(--border); padding: 2rem; margin: 1.5rem 0; position: relative; }
   .predict-section::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #7eb8ff, #ff8c00); }
   .predict-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.4rem; margin-bottom: 0.3rem; }
@@ -256,9 +255,104 @@
   .card, .progress-section, .chart-section, .grades-section, .quote-card, .status-banner, .mission-section, .predict-section { animation: fadeUp 0.5s ease both; }
 
   footer { text-align: center; padding: 3rem 0 2rem; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; }
+
+  /* ══════════════════════════════════════════════
+     VICTORY OVERLAY — fajerwerki
+  ══════════════════════════════════════════════ */
+  #victoryOverlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9999;
+    pointer-events: none;
+  }
+  #victoryOverlay.active { display: block; pointer-events: auto; }
+
+  /* canvas na fajerwerki */
+  #fireworksCanvas {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+  }
+
+  /* centralny baner */
+  #victoryBanner {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+    background: radial-gradient(ellipse at center, rgba(10,10,15,0.97) 0%, rgba(10,10,15,0.85) 100%);
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 60px rgba(255,215,0,0.4), inset 0 0 40px rgba(255,215,0,0.05);
+    padding: 3rem 4rem;
+    max-width: 600px;
+    width: 90vw;
+  }
+  #victoryBanner.show { transform: translate(-50%, -50%) scale(1); }
+
+  .vb-tag {
+    font-family: 'Space Mono', monospace; font-size: 0.65rem; letter-spacing: 0.3em;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 1.2rem;
+    animation: flicker 1.5s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%,100% { opacity: 1; } 50% { opacity: 0.7; }
+  }
+  .vb-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3rem, 10vw, 6rem);
+    line-height: 0.9;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ffd700 100%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    animation: shimmer 2s linear infinite;
+    margin-bottom: 0.5rem;
+  }
+  @keyframes shimmer { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+
+  .vb-avg {
+    font-family: 'Bebas Neue', sans-serif; font-size: clamp(4rem, 14vw, 8rem);
+    color: var(--good); line-height: 1; text-shadow: 0 0 40px rgba(57,255,20,0.6);
+    margin: 0.3rem 0;
+  }
+  .vb-sub {
+    font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--muted);
+    margin-bottom: 1.5rem; line-height: 1.6;
+  }
+  .vb-close {
+    font-family: 'Space Mono', monospace; font-size: 0.75rem; letter-spacing: 0.1em;
+    background: var(--gold); color: #000; border: none; padding: 0.7rem 2rem;
+    cursor: pointer; font-weight: 700; text-transform: uppercase;
+    transition: opacity 0.15s; pointer-events: auto;
+  }
+  .vb-close:hover { opacity: 0.85; }
+
+  .vb-stars {
+    font-size: 2rem; margin-bottom: 0.8rem;
+    animation: bounce-stars 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes bounce-stars { from { transform: translateY(0); } to { transform: translateY(-6px); } }
+
+  /* złoty puls na karcie ze średnią gdy cel osiągnięty */
+  @keyframes gold-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); border-color: var(--border); }
+    50% { box-shadow: 0 0 30px 6px rgba(255,215,0,0.3); border-color: var(--gold); }
+  }
+  .card.goal-reached { animation: gold-pulse 2s ease-in-out infinite !important; }
 </style>
 </head>
 <body>
+
+<!-- ══ VICTORY OVERLAY ══ -->
+<div id="victoryOverlay">
+  <canvas id="fireworksCanvas"></canvas>
+  <div id="victoryBanner">
+    <div class="vb-stars">🏆 🎯 🏆</div>
+    <div class="vb-tag">⚡ Misja zakończona ⚡</div>
+    <div class="vb-title">WOJTEK<br>ZDAŁ!</div>
+    <div class="vb-avg" id="vbAvgDisplay">—</div>
+    <div class="vb-sub">Średnia ważona przekroczyła wymagane <strong style="color:#fff">1.80</strong>!<br>Cel osiągnięty. Tak się to robi! 💪</div>
+    <button class="vb-close" onclick="closeVictory()">Zamknij i świętuj dalej →</button>
+  </div>
+</div>
+<!-- ══════════════════════ -->
+
 <div class="container">
 
   <header>
@@ -274,7 +368,7 @@
   </div>
 
   <div class="grid-2">
-    <div class="card">
+    <div class="card" id="avgCard">
       <div class="card-label">📊 Średnia ważona</div>
       <div class="card-value danger" id="currentAvg">—</div>
       <div class="card-sub" id="currentGradeCount">Ładowanie...</div>
@@ -334,7 +428,6 @@
     </div>
   </div>
 
-  <!-- ══ KALKULATOR PRZEWIDYWANYCH OCEN ══ -->
   <div class="predict-section">
     <div class="predict-title">🔮 Kalkulator przewidywanych ocen</div>
     <div class="predict-subtitle">Dodaj ile chcesz ocen — zobaczysz jak zmieni się Twoja średnia ważona</div>
@@ -367,7 +460,6 @@
       <div class="predict-empty">← Dodaj przewidywane oceny żeby zobaczyć wynik</div>
     </div>
   </div>
-  <!-- ══════════════════════════════════════ -->
 
   <div class="mission-section" id="missionSection"></div>
 
@@ -385,6 +477,7 @@ var grades = [];
 var gradeOverrides = {};
 var predictedGrades = [];
 var predNextId = 0;
+var victoryShown = false;
 
 var GRADE_NAMES = {1:'1',1.5:'1+',2:'2',2.5:'2+',3:'3',3.5:'3+',4:'4',4.5:'4+',5:'5',5.5:'5+',6:'6'};
 var TARGET = 1.8;
@@ -393,6 +486,165 @@ var FALLBACK_QUOTES = [
   { text: "Średnia 1.8 nie spada z nieba. Ale można ją zbudować ocena po ocenie.", autor: "— Statystyka" },
   { text: "Nie musisz kochać matematyki. Musisz ją tylko zdać.", autor: "— Pragmatyczny Mentor" }
 ];
+
+/* ══ FAJERWERKI ══════════════════════════════════════════════════════ */
+var fw = { canvas: null, ctx: null, particles: [], rockets: [], raf: null, active: false };
+
+function fwInit() {
+  fw.canvas = document.getElementById('fireworksCanvas');
+  fw.ctx = fw.canvas.getContext('2d');
+  fw.canvas.width = window.innerWidth;
+  fw.canvas.height = window.innerHeight;
+}
+
+function fwResize() {
+  if (!fw.canvas) return;
+  fw.canvas.width = window.innerWidth;
+  fw.canvas.height = window.innerHeight;
+}
+
+function fwRandom(min, max) { return Math.random() * (max - min) + min; }
+
+function fwHue() {
+  var hues = [50, 45, 35, 120, 200, 0, 280];
+  return hues[Math.floor(Math.random() * hues.length)];
+}
+
+function fwLaunchRocket() {
+  var x = fwRandom(fw.canvas.width * 0.15, fw.canvas.width * 0.85);
+  var targetY = fwRandom(fw.canvas.height * 0.1, fw.canvas.height * 0.45);
+  fw.rockets.push({
+    x: x, y: fw.canvas.height,
+    tx: x + fwRandom(-60, 60), ty: targetY,
+    speed: fwRandom(12, 20),
+    hue: fwHue(),
+    trail: []
+  });
+}
+
+function fwExplode(x, y, hue) {
+  var count = Math.floor(fwRandom(80, 140));
+  for (var i = 0; i < count; i++) {
+    var angle = (Math.PI * 2 / count) * i + fwRandom(-0.1, 0.1);
+    var speed = fwRandom(2, 8);
+    fw.particles.push({
+      x: x, y: y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      alpha: 1,
+      decay: fwRandom(0.012, 0.022),
+      hue: hue + fwRandom(-20, 20),
+      size: fwRandom(2, 4.5),
+      gravity: 0.08
+    });
+  }
+}
+
+function fwTick() {
+  if (!fw.active) return;
+  var ctx = fw.ctx;
+  var W = fw.canvas.width, H = fw.canvas.height;
+  ctx.fillStyle = 'rgba(10,10,15,0.18)';
+  ctx.fillRect(0, 0, W, H);
+
+  // Rakiety
+  for (var ri = fw.rockets.length - 1; ri >= 0; ri--) {
+    var r = fw.rockets[ri];
+    r.trail.push({x: r.x, y: r.y});
+    if (r.trail.length > 12) r.trail.shift();
+    var dx = r.tx - r.x, dy = r.ty - r.y;
+    var dist = Math.sqrt(dx*dx + dy*dy);
+    if (dist < r.speed || r.y <= r.ty) {
+      fwExplode(r.x, r.y, r.hue);
+      fw.rockets.splice(ri, 1);
+    } else {
+      var nx = dx / dist, ny = dy / dist;
+      r.x += nx * r.speed; r.y += ny * r.speed;
+      // Rysuj ślad
+      for (var ti = 0; ti < r.trail.length; ti++) {
+        var alpha = (ti / r.trail.length) * 0.8;
+        ctx.beginPath();
+        ctx.arc(r.trail[ti].x, r.trail[ti].y, 2, 0, Math.PI * 2);
+        ctx.fillStyle = 'hsla(' + r.hue + ',100%,80%,' + alpha + ')';
+        ctx.fill();
+      }
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, 3, 0, Math.PI * 2);
+      ctx.fillStyle = 'hsla(' + r.hue + ',100%,90%,1)';
+      ctx.fill();
+    }
+  }
+
+  // Cząsteczki
+  for (var pi = fw.particles.length - 1; pi >= 0; pi--) {
+    var p = fw.particles[pi];
+    p.x += p.vx; p.y += p.vy;
+    p.vy += p.gravity;
+    p.vx *= 0.98; p.vy *= 0.98;
+    p.alpha -= p.decay;
+    if (p.alpha <= 0) { fw.particles.splice(pi, 1); continue; }
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = 'hsla(' + p.hue + ',100%,70%,' + p.alpha + ')';
+    ctx.fill();
+  }
+
+  fw.raf = requestAnimationFrame(fwTick);
+}
+
+var fwLaunchInterval = null;
+var fwLaunchCount = 0;
+
+function startFireworks() {
+  fwInit();
+  fw.active = true;
+  fw.particles = []; fw.rockets = [];
+  fwLaunchCount = 0;
+  // Pierwsze salwy natychmiast
+  for (var i = 0; i < 5; i++) setTimeout(fwLaunchRocket, i * 180);
+  fwLaunchInterval = setInterval(function() {
+    fwLaunchCount++;
+    var burst = fwLaunchCount < 6 ? Math.floor(fwRandom(2, 4)) : 1;
+    for (var b = 0; b < burst; b++) fwLaunchRocket();
+    if (fwLaunchCount > 30) {
+      clearInterval(fwLaunchInterval);
+    }
+  }, 600);
+  fwTick();
+}
+
+function stopFireworks() {
+  fw.active = false;
+  if (fwLaunchInterval) clearInterval(fwLaunchInterval);
+  if (fw.raf) cancelAnimationFrame(fw.raf);
+  if (fw.ctx && fw.canvas) fw.ctx.clearRect(0, 0, fw.canvas.width, fw.canvas.height);
+}
+
+function showVictory(avg) {
+  if (victoryShown) return;
+  victoryShown = true;
+  document.getElementById('vbAvgDisplay').textContent = avg.toFixed(2);
+  var overlay = document.getElementById('victoryOverlay');
+  var banner = document.getElementById('victoryBanner');
+  overlay.classList.add('active');
+  startFireworks();
+  // Lekkie opóźnienie żeby overlay był widoczny przed animacją baneru
+  setTimeout(function() { banner.classList.add('show'); }, 80);
+  // Złoty puls na karcie
+  var avgCard = document.getElementById('avgCard');
+  if (avgCard) avgCard.classList.add('goal-reached');
+}
+
+function closeVictory() {
+  stopFireworks();
+  var overlay = document.getElementById('victoryOverlay');
+  var banner = document.getElementById('victoryBanner');
+  banner.classList.remove('show');
+  setTimeout(function() { overlay.classList.remove('active'); }, 400);
+}
+
+window.addEventListener('resize', fwResize);
+/* ══ KONIEC FAJERWERKÓW ══════════════════════════════════════════════ */
 
 async function loadQuotes() {
   try {
@@ -529,7 +781,6 @@ function onGradeOverride(idx, newVal) {
     gradeOverrides[idx] = { ocena: opt.val, name: opt.name };
   }
 
-  // Aktualizuj tylko styl selecta i reset button bez rerenderowania całej tabeli
   var sel = document.getElementById('gsel_' + idx);
   var rst = document.getElementById('grst_' + idx);
   if (sel) {
@@ -543,7 +794,6 @@ function onGradeOverride(idx, newVal) {
   var banner = document.getElementById('modifiedBanner');
   if (banner) banner.style.display = hasOverrides ? 'block' : 'none';
 
-  // Przelicz wpływ w tej samej linii
   var eff = effectiveGrades();
   var totalW = eff.reduce(function(s, g) { return s + g.waga; }, 0);
   var impactEl = document.getElementById('gimp_' + idx);
@@ -561,6 +811,7 @@ function onGradeOverride(idx, newVal) {
 
 function resetAllOverrides() {
   gradeOverrides = {};
+  victoryShown = false;
   renderTable();
   updateStats();
   drawChart();
@@ -605,7 +856,7 @@ function renderTable() {
       + '<td>' + sel + resetBtn + '</td>'
       + '<td><span class="badge-waga ' + wl.cls + '">' + wl.txt + '</span></td>'
       + '<td style="color:var(--muted)">' + (g.data || '—') + '</td>'
-      + '<td style="color:var(--muted);font-size:0.72rem">+' + impact + '</td>'
+      + '<td style="color:var(--muted);font-size:0.72rem" id="gimp_' + i + '">+' + impact + '</td>'
       + '</tr>';
   }).join('');
 }
@@ -639,10 +890,20 @@ function updateStats() {
   document.getElementById('progressFill').style.width = pct.toFixed(1) + '%';
   document.getElementById('progressPct').textContent = pct.toFixed(0) + '%';
   var b = document.getElementById('statusBanner');
+
+  // ── VICTORY CHECK ──────────────────────────────
   if (avg >= target) {
     b.className = 'status-banner ok';
     b.innerHTML = '✅ JESTEŚ NA CELU! Twoja średnia ważona ' + ar.toFixed(2) + ' przekracza wymaganą 1.8. Utrzymaj tempo!';
+    // Pokaż fajerwerki tylko raz przy pierwszym przekroczeniu celu
+    if (!victoryShown) {
+      setTimeout(function() { showVictory(avg); }, 600);
+    }
   } else {
+    // Zresetuj flagę jeśli cofnął się poniżej celu
+    victoryShown = false;
+    var avgCard = document.getElementById('avgCard');
+    if (avgCard) avgCard.classList.remove('goal-reached');
     b.className = 'status-banner warn';
     var need = calcNeeded(avg, eff, target);
     if (need) {
@@ -765,7 +1026,6 @@ function renderPredicted() {
     return;
   }
 
-  // Renderuj listę
   listEl.innerHTML = predictedGrades.map(function(g) {
     var name = GRADE_NAMES[g.ocena] || String(g.ocena);
     var gc = g.ocena >= 3 ? 'high' : g.ocena >= 2 ? 'mid' : 'low';
@@ -778,7 +1038,6 @@ function renderPredicted() {
       + '</div>';
   }).join('');
 
-  // Oblicz wynik
   var eff = effectiveGrades();
   var baseSumGW = eff.reduce(function(s, g) { return s + g.ocena * g.waga; }, 0);
   var baseSumW  = eff.reduce(function(s, g) { return s + g.waga; }, 0);
@@ -819,7 +1078,6 @@ function renderPredicted() {
     + '<br>Margines do celu: <strong style="color:' + (ok ? 'var(--good)' : 'var(--danger)') + '">' + diffStr + '</strong>'
     + '</div>';
 }
-// ───────────────────────────────────────────────────────────────────────────
 
 // ── MISJA DYNAMICZNA ────────────────────────────────────────────────────────
 var EXPECTED_FUTURE = [0.6, 0.6, 0.4, 0.4];
@@ -1017,12 +1275,12 @@ function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
     futureGW += g.val * remaining[i];
   }
   var finalAvg = grandTotalW > 0 ? (curSumGW + futureGW) / grandTotalW : null;
-  if (finalAvg === null || isNaN(finalAvg)) { if (res) res.innerHTML = ''; return; }
+  var res = document.getElementById('sliderResult');
+  if (!res) return;
+  if (finalAvg === null || isNaN(finalAvg)) { res.innerHTML = ''; return; }
   var ok = finalAvg >= TARGET_AVG;
   var diff = finalAvg - TARGET_AVG;
   var diffStr = (diff >= 0 ? '+' : '') + diff.toFixed(3);
-  var res = document.getElementById('sliderResult');
-  if (!res) return;
   var statusMsg = ok ? '✅ ZDAJESZ! Powyżej 1.8' : '❌ ZA MAŁO. Brakuje ' + Math.abs(diff).toFixed(2) + ' pkt';
   res.innerHTML = '<div style="display:flex;align-items:baseline;gap:1rem;margin-bottom:0.5rem;">'
     + '<div class="res-avg ' + (ok ? 'ok' : 'fail') + '">' + finalAvg.toFixed(2) + '</div>'
@@ -1034,7 +1292,6 @@ function updateDynSlider(curSumGW, curSumW, remaining, grandTotalW) {
     + ' · Margines: <span style="color:' + (ok ? 'var(--good)' : 'var(--danger)') + '">' + diffStr + '</span>'
     + '</div>';
 }
-// ────────────────────────────────────────────────────────────────────────────
 </script>
 </body>
 </html>
